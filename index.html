@@ -1251,7 +1251,7 @@ var storyTex = canvasTex(2400, 640, function(g, w, h){
 });
 var signTex = canvasTex(1024, 256, function(g, w, h){
   g.fillStyle = '#0B2540'; g.fillRect(0, 0, w, h);
-  g.fillStyle = '#FFFFFF'; g.font = '500 70px Jost, sans-serif'; g.fillText('↑  Showroom · Lounge', 40, 120);
+  g.fillStyle = '#FFFFFF'; g.font = '500 70px Jost, sans-serif'; g.fillText('↑  Showroom', 40, 120);
   g.font = '400 40px Inter, sans-serif'; g.fillStyle = '#9CC3E0'; g.fillText('1. Obergeschoss · Lift links', 48, 190);
 });
 var neuronTex = canvasTex(2048, 640, function(g, w, h){
@@ -1737,7 +1737,7 @@ var behGroup = new THREE.Group(); furnOG.add(behGroup);
 person(behGroup, 41.0, 1.7, OG, std(0xDCE8F5, { roughness: 0.8 }));
 
 // Verhältnis installation, now part of the lounge: built in its original frame, then turned and placed along the lounge's west window
-var verGroup = new THREE.Group(); furnOG.add(verGroup);
+var verGroup = new THREE.Group(); furnOG.add(verGroup); 
 (function(){
   var X = 43.3, top = OG + 3.0, eye = OG + 1.5;
   var sizes = [0.5, 0.26, 0.13, 0.065], ys = [5.9, 7.0, 7.9, 8.6];
@@ -1792,6 +1792,7 @@ function podDraw(sy){ return function(g, w, h){
   heptLogo(g, w / 2, h / 2, 92, true, sy);
 }; }
 var podTex = brandScreen(512, 192, { mirror: true, sy: 1.25, logoY: 0.5, logoR: 0.28, seed: 17 });
+var podTexOut = brandScreen(512, 192, { sy: 1.25, logoY: 0.5, logoR: 0.3, seed: 19 }); // outside face of each pod screen, readable from the front
 var vrWallTex = canvasTex(512, 512, function(g, w, h){ g.fillStyle = '#F2F2F0'; g.fillRect(0, 0, w, h); g.strokeStyle = '#2F7FD0'; g.lineWidth = 16; g.beginPath();
   for (var j = 0; j <= 7; j++){ var a = j * 2 * Math.PI / 7 - Math.PI / 2; var x = w / 2 + Math.cos(a) * 190, y = h / 2 + Math.sin(a) * 190; if (j === 0) g.moveTo(x, y); else g.lineTo(x, y); } g.stroke();
   g.fillStyle = '#2F7FD0'; g.font = '700 118px Jost, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('MERZ', w / 2, h / 2 + 6); });
@@ -1834,8 +1835,8 @@ var vrOption = 'A', OPT = { vr: 'A', forum: 'hybrid' };
   });
 
   // ---- Option B: movie chairs ----
-  function pod(x, y){
-    var g = new THREE.Group(); g.position.copy(V(x, y, b));
+  function pod(x, y, rotY){
+    var g = new THREE.Group(); g.position.copy(V(x, y, b + 0.08)); g.rotation.y = rotY || 0; g.scale.setScalar(0.84);
     var foot = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.4, 0.04, 32), M.gloss); foot.position.y = 0.02; g.add(foot);
     var ped = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.32, 0.55, 32), M.gloss); ped.position.y = 0.3; ped.castShadow = true; g.add(ped);
     var shellM = M.gloss.clone(); shellM.side = THREE.DoubleSide;
@@ -1843,14 +1844,19 @@ var vrOption = 'A', OPT = { vr: 'A', forum: 'hybrid' };
     var cu = new THREE.Mesh(new THREE.SphereGeometry(0.42, 28, 18), M.vrBlue); cu.scale.set(0.74, 1.3, 0.3); cu.position.set(0, 1.06, 0.24); cu.rotation.x = 0.3; g.add(cu);
     var seat = new THREE.Mesh(new THREE.SphereGeometry(0.3, 24, 14), M.vrBlue); seat.scale.set(1, 0.35, 1.1); seat.position.set(0, 0.68, -0.05); g.add(seat);
     var arm = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.6, 10), M.gloss); arm.position.set(0, 1.85, 0.12); arm.rotation.x = 1.0; g.add(arm);
-    var scrM = new THREE.MeshBasicMaterial({ map: podTex, side: THREE.DoubleSide, toneMapped: false });
+    var scrM = new THREE.MeshBasicMaterial({ map: podTex, side: THREE.BackSide, toneMapped: false });
     var scr = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.3, 40, 1, true, Math.PI - 1.0, 2.0), scrM); scr.position.set(0, 1.62, 0.1); g.add(scr);
-    var scrBack = new THREE.Mesh(new THREE.CylinderGeometry(0.515, 0.515, 0.32, 40, 1, true, Math.PI - 1.02, 2.04), M.furnDark); scrBack.position.copy(scr.position); g.add(scrBack);
+    var scrBack = new THREE.Mesh(new THREE.CylinderGeometry(0.515, 0.515, 0.32, 40, 1, true, Math.PI - 1.02, 2.04), new THREE.MeshBasicMaterial({ map: podTexOut, toneMapped: false })); scrBack.position.copy(scr.position); g.add(scrBack);
     var ring = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.012, 6, 40), M.coolLight); ring.rotation.x = Math.PI / 2; ring.position.y = 0.045; g.add(ring);
     vrB.add(g);
   }
-  [[39.7, 14.2], [40.85, 14.45], [41.95, 14.45], [43.1, 14.2], [39.7, 11.4], [40.85, 11.65], [41.95, 11.65], [43.1, 11.4]].forEach(function(p){ pod(p[0], p[1]); });
-
+  // VR stations: three pod stations (five pods each, in a gentle arc on a lit white platform) in front of the wrap-around screen wall, facing the room
+  [15.25, 12.95, 10.65].forEach(function(yc){
+    [39.6, 40.5, 41.4, 42.3, 43.2].forEach(function(x){ var u = (x - 41.4) / 1.8, y = yc - 0.35 * u * u; pod(x, y, Math.atan2(x - 41.4, y - (yc - 5.5))); });
+    var plat = new THREE.Mesh(new THREE.ExtrudeGeometry(roundedShape([[38.95 - OX, yc - 0.95 - OZ], [43.85 - OX, yc - 0.95 - OZ], [43.85 - OX, yc + 0.6 - OZ], [38.95 - OX, yc + 0.6 - OZ]], 0.5), { depth: 0.08, bevelEnabled: false, curveSegments: 10 }), M.gloss);
+    plat.geometry.rotateX(Math.PI / 2); plat.position.y = b + 0.08; plat.receiveShadow = true; vrB.add(plat);
+    lightPath(vrB, [[38.98, yc - 0.92], [43.82, yc - 0.92], [43.82, yc + 0.57], [38.98, yc + 0.57]], b + 0.01, 0.48, true, M.coolLight);
+  });
 })();
 // swap: rotate both zones 180° about the Showroom centre, so the VR station sits at the east end and the live demo in the west part
 [behGroup, vrRoom, vrA, vrB].forEach(function(g){ g.rotation.y = Math.PI; g.position.set(2 * ((WE + W) / 2 - OX), 0, 2 * (D2 / 2 - OZ)); });
@@ -2267,7 +2273,7 @@ M.navySeat = std(0x14234A, { roughness: 0.7 }); M.sageSeat = std(0x3C6A3A, { rou
   lightPath(furnEG, [[38.3, 9.0], [37.2, 9.6], [36.8, 11.2], [37.1, 12.6], [36.4, 14.4], [35.4, 15.6]], 0.012, 0, false, M.coolGlow);
 
 })();
-// --- Lobby sitting corner next to the Forum door: sculpted shelf wall with backlit oak niche, soft grey sofa, teal lounge chair and ottoman, glass table, palm
+// --- Lobby waiting corner next to the Forum door: sculpted shelf wall with backlit oak niche, soft grey sofa, teal lounge chair and ottoman, glass table, palm
 M.softGrey = std(0xB9B8B4, { roughness: 0.95 }); M.teal = std(0x13889C, { roughness: 0.5 }); M.tealFloor = std(0x7FCFD3, { roughness: 0.12, envMapIntensity: 0.9 });
 M.charcoal = std(0x2E3236, { roughness: 0.45 }); M.chrome = std(0xDCE1E5, { roughness: 0.12, metalness: 0.95 });
 M.oakDS = std(0xC08E5C, { roughness: 0.55, side: THREE.DoubleSide, emissive: 0x3A2410 }); M.charDS = std(0x2E3236, { roughness: 0.45, side: THREE.DoubleSide });
@@ -2342,8 +2348,8 @@ reliefWall(furnEG, 'v', 38.45, -1, 14.7, 16.68, 0.15, 2.8, 17); // tall wall bet
 // --- Lounge long wall behind Verhältnis: a living light wall (animated waves of Merz blue on a pale field) in a glowing frame, on an oak plinth.
 //     The wall starts at y 10.45 as in the plan; north of that the lounge opens into corridor R208.
 (function(){
-  var y0 = 10.6, y1 = 15.55, h0 = OG + 0.38, h1 = OG + 2.86, xw = 31.49, rad = 0.28;
-  var cw = 1536, ch = 512;
+  var y0 = 12.15, y1 = 15.6, h0 = OG + 0.38, h1 = OG + 2.86, xw = 31.49, rad = 0.28; // only behind the Verhältnis objects
+  var cw = 1152, ch = 512;
   function drawWall(g, w, h){
     var t = (anim.wallT || 0);
     var gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#F4F7FB'); gr.addColorStop(1, '#DCE6F0'); g.fillStyle = gr; g.fillRect(0, 0, w, h);
@@ -2375,6 +2381,18 @@ reliefWall(furnEG, 'v', 38.45, -1, 14.7, 16.68, 0.15, 2.8, 17); // tall wall bet
   solid(furnOG, 31.45, 10.5, 31.48, 15.65, OG, OG + 3.0, M.white, { edges: false });
   solid(furnOG, 31.47, 10.5, 31.62, 15.6, OG, OG + 0.3, M.lightOak, { edges: false });
   solid(furnOG, 31.62, 10.55, 31.64, 15.55, OG + 0.3, OG + 0.315, M.coveWarm, { edges: false, shadow: false });
+  // wall-mounted iPads on the free wall section: slim tablets on flush wall brackets with a soft light halo, each running the Merz content loop
+  var padHalo = new THREE.MeshBasicMaterial({ color: 0x9FD8FF, transparent: true, opacity: 0.35, toneMapped: false, depthWrite: false });
+  var padTex = brandScreen(360, 480, { logoY: 0.3, logoR: 0.2, text: 'Touch · Entdecken', textY: 0.72, seed: 47 });
+  [[10.95, 1.62], [11.5, 1.62], [10.95, 1.12], [11.5, 1.12]].forEach(function(p, i){
+    var g = new THREE.Group(); g.position.copy(V(31.52, p[0], OG + p[1])); g.rotation.y = Math.PI / 2;
+    var bracket = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.24, 0.02), M.chromeB); bracket.position.z = -0.016; g.add(bracket);
+    var halo = new THREE.Mesh(new THREE.PlaneGeometry(0.36, 0.46), padHalo); halo.position.z = -0.027; g.add(halo);
+    var body = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.4, 0.012), M.furnDark); body.castShadow = true; g.add(body);
+    var scr = new THREE.Mesh(new THREE.PlaneGeometry(0.27, 0.37), new THREE.MeshBasicMaterial({ map: i ? brandClone(padTex) : padTex, toneMapped: false })); scr.position.z = 0.006; g.add(scr);
+    furnOG.add(g);
+    g.traverse(function(o){ o.userData.plan = [31.52, p[0]]; });
+  });
   var acc = 0;
   anim.wallFx = function(tt, dt){
     anim.wallT = tt; acc += dt || 0.016; if (acc < 1 / 20) return; acc = 0;
@@ -2492,7 +2510,7 @@ var STATIONS = [
       { t: 'Check-in screens', d: 'Two dedicated screens set into the desk: guests scan the QR code from their invitation and their badge prints right at the desk.', at: [41.6, 11.2, 1.45] },
       { t: 'History wall · wall-to-floor LED', d: 'On the left, across the hall: an 8.3 m LED surface on the history wall continues onto the floor and plays the company’s milestones as a slow, looping film.', at: [33.6, 12.4, 1.9] },
       { t: 'Hologram in the corner', d: 'A life-size hologram character in a glass column in the corner by the stairs welcomes guests and points the way.', at: [37.9, 8.1, 1.9] },
-      { t: 'Lounge corner', d: 'Next to the Forum door: a cognac Barcelona-style chair by a glass table, in front of a sculpted wall with a backlit oak niche, with a potted palm on a teal floor island.', at: [37.2, 16.2, 1.3] },
+      { t: 'Waiting corner', d: 'Next to the Forum door: a cognac Barcelona-style chair by a glass table, in front of a sculpted wall with a backlit oak niche, with a potted palm on a teal floor island.', at: [37.2, 16.2, 1.3] },
       { t: 'On to the Forum and upstairs', d: 'The floor Leitlinie in brand colours leads into the Forum. Stairs TH01 and lift R107 take the group to the Showroom later.', at: [36.9, 8.2, 2.2] }
     ] },
   { n: 2, name: 'Forum', short: 'Forum', where: 'R113a · Erdgeschoss', dur: '10–15 min', lvl: 'eg', rooms: ['R113a'],
@@ -2550,11 +2568,11 @@ var STATIONS = [
           { t: 'Curved bench tiers and rows', d: 'Three rounded tiers in Merz blue across the whole room; the rear tiers are raised so every guest sees the whole dome. Usable by several people at once.', at: [41.4, 4.0, 1.0] },
           { t: 'Wrap-around screen', d: 'The side wall and the front wall are one continuous floor-to-ceiling screen, so the film wraps around the room.', at: [38.85, 4.6, 1.9] }
         ] },
-      B: { label: 'B · Movie Chairs', name: 'VR · Movie Chairs', cam: [43.4, 8.9, 1.75], look: [41.0, 4.0, 1.0],
+      B: { label: 'B · Movie Chairs', name: 'VR · Movie Chairs', cam: [41.4, 9.35, 2.35], look: [41.4, 3.6, 0.7],
         text: 'Option B · comfortable reclining chairs for several people. Content runs on a panorama screen with audio in front of each chair — synchronised for the group or individually.',
         steps: ['Guests settle into the reclining pod chairs.', 'Each chair has its own curved panorama screen at eye level and built-in audio.', 'The guide runs one synchronised film, or guests choose content individually.', 'Content is easy to extend; the LED wall behind shows the same film for onlookers.'],
         hot: [
-          { t: 'Pod chairs', d: 'Comfortable reclining shells on a pedestal, with a blue cushion — the “comfortable seats” of the concept.', at: [41.94, 5.5, 1.3] },
+          { t: 'Pod chairs', d: 'Three pod stations of five reclining pods each, side by side on lit white platforms, every pod with its own curved screen, in front of the wrap-around screen wall.', at: [41.4, 4.4, 1.3] },
           { t: 'Panorama screens', d: 'A curved screen with audio in front of each guest; content runs synchronised or individually.', at: [40.84, 5.45, 1.95] },
           { t: 'Wrap-around screen', d: 'The side and front walls are one continuous floor-to-ceiling screen behind the chairs; it plays the same content for guests who are waiting.', at: [41.39, 0.29, 2.0] }
         ] }
@@ -2565,6 +2583,7 @@ var STATIONS = [
     at: [34.7, 11.8, 2.0], box: [31.6, 9.1, 38.5, 16.95], center: [34.8, 12.8], cam: [37.6, 13.6, 1.65], look: [32.2, 12.2, 1.3],
     hot: [
       { t: 'Hologram character', d: 'Life-size hologram in a glass column at the end of the Verhältnis wall; greets guests and answers frequent questions.', at: [32.05, 16.25, 1.9] },
+      { t: 'Wall iPads', d: 'Four tablets mounted flush on the wall beside the light wall: guests tap through products, the site and the Verhältnis stories.', at: [31.6, 11.2, 1.95] },
       { t: 'Xeomin hologram', d: 'In the window corner a projection pedestal shows a slowly rotating, holographic molecule labelled Xeomin® — the product the site makes.', at: [36.9, 15.85, 1.6] },
       { t: 'Interactive touch table', d: 'Put a product on the table: it is recognised and the surface shows manufacturing, use and availability.', at: [34.7, 11.8, 1.15] },
       { t: 'Verhältnis · hanging objects', d: 'Pufferfish, snake, spider and frog hang along the long wall as sculptural samples in Merz blues.', at: [31.9, 13.4, 1.7] },
@@ -3151,7 +3170,7 @@ var DE_STATIONS = [
       { t: 'Anmelde-Screens', d: 'Zwei eigene Bildschirme im Tresen: Die Gäste scannen den QR-Code aus der Einladung, der Badge wird direkt am Tresen gedruckt.' },
       { t: 'Geschichtswand · LED bis zum Boden', d: 'Links gegenüber: eine 8,3 m lange LED-Fläche auf der Geschichtswand läuft bis auf den Boden und zeigt die Meilensteine des Unternehmens als ruhigen Loop.' },
       { t: 'Hologramm in der Ecke', d: 'Eine lebensgroße Hologramm-Figur in einer Glassäule in der Ecke an der Treppe begrüßt die Gäste und weist den Weg.' },
-      { t: 'Lounge-Ecke', d: 'Neben der Forumstür: ein cognacfarbener Sessel im Barcelona-Stil an einem Glastisch, vor einer skulpturalen Wand mit hinterleuchteter Eichennische, mit Palme auf einer petrolfarbenen Bodeninsel.' },
+      { t: 'Warte-Ecke', d: 'Neben der Forumstür: ein cognacfarbener Sessel im Barcelona-Stil an einem Glastisch, vor einer skulpturalen Wand mit hinterleuchteter Eichennische, mit Palme auf einer petrolfarbenen Bodeninsel.' },
       { t: 'Weiter ins Forum und nach oben', d: 'Die Leitlinie im Boden in Markenfarben führt ins Forum. Treppe TH01 und Aufzug R107 bringen die Gruppe später in den Showroom.' }] },
   { short: 'Forum', where: 'R113a · Erdgeschoss', optLabel: 'Forum-Layout', opts: {
       brief: { label: 'Briefing', name: 'Forum · Briefing', text: 'Debrief- und Briefingraum. Der Guide stellt das Programm vor der großen LED-Wand vor; wartende Gäste nutzen die Info-Kioske.',
@@ -3190,13 +3209,14 @@ var DE_STATIONS = [
           { t: 'Umlaufender Screen', d: 'Seiten- und Stirnwand bilden einen durchgehenden raumhohen Bildschirm, der Film läuft um den Raum herum.' }] },
       B: { label: 'B · Kinosessel', name: 'VR · Kinosessel', text: 'Variante B · bequeme Liegen für mehrere Personen. Vor jedem Sessel läuft der Content auf einem Panorama-Screen mit Audio – synchron für die Gruppe oder individuell.',
         steps: ['Die Gäste machen es sich in den Liegesesseln bequem.', 'Jeder Sessel hat einen eigenen gebogenen Panorama-Screen auf Augenhöhe und integriertes Audio.', 'Der Guide startet einen synchronen Film, oder die Gäste wählen ihren Content selbst.', 'Inhalte sind leicht erweiterbar; die LED-Wand dahinter zeigt den Film für Zuschauende.'],
-        hot: [{ t: 'Liegesessel', d: 'Bequeme Liegeschalen auf einem Sockel mit blauem Polster – die „bequemen Sitze“ des Konzepts.' },
+        hot: [{ t: 'Liegesessel', d: 'Drei Pod-Stationen mit je fünf Liegesesseln nebeneinander auf beleuchteten weißen Podesten, jeder mit eigenem gebogenem Screen, vor der umlaufenden Screen-Wand.' },
           { t: 'Panorama-Screens', d: 'Vor jedem Gast ein gebogener Bildschirm mit Audio; Inhalte laufen synchron oder individuell.' },
           { t: 'Umlaufender Screen', d: 'Seiten- und Stirnwand sind ein durchgehender raumhoher Bildschirm hinter den Sesseln; er zeigt wartenden Gästen denselben Inhalt.' }] } } },
   { name: 'Lounge', short: 'Lounge', where: 'Lounge R203 · 1. Obergeschoss',
     text: 'Gespräche und die Installation Verhältnis, die jetzt an der langen Wand der Lounge hängt. Die Hologramm-Figur steht an ihrem Ende, und der Touch-Tisch erkennt Merz-Produkte.',
     steps: ['Durch die Terrassentür geht es auf die Dachterrasse 2, einen schlichten Sitzbereich im Freien.', 'Wer ein Produkt auf den Touch-Tisch legt, sieht Herstellung, Anwendung und Verfügbarkeit.', 'An der langen Wand stellt Verhältnis das Toxin Tiergiften gegenüber; dahinter bewegt sich eine lebendige Lichtwand in langsamen Wellen in Merz-Blau.', 'Die Hologramm-Figur verabschiedet die Gäste – dann geht es die Treppe hinunter zum Ausgang.'],
     hot: [{ t: 'Hologramm-Figur', d: 'Lebensgroßes Hologramm in einer Glassäule am Ende der Verhältnis-Wand; begrüßt die Gäste und beantwortet häufige Fragen.' },
+      { t: 'Wand-iPads', d: 'Vier Tablets sitzen bündig an der Wand neben der Lichtwand: Die Gäste tippen sich durch Produkte, den Standort und die Verhältnis-Geschichten.' },
       { t: 'Xeomin-Hologramm', d: 'In der Fensterecke zeigt ein Projektionssockel ein langsam rotierendes holografisches Molekül mit der Aufschrift Xeomin® – das Produkt des Standorts.' },
       { t: 'Interaktiver Touch-Tisch', d: 'Ein Produkt auf den Tisch legen: Es wird erkannt, und die Oberfläche zeigt Herstellung, Anwendung und Verfügbarkeit.' },
       { t: 'Verhältnis · hängende Objekte', d: 'Kugelfisch, Schlange, Spinne und Frosch hängen als skulpturale Exponate in Merz-Blautönen an der langen Wand.' },
@@ -3215,7 +3235,7 @@ var EN_FIX = [ // corrected English (out-of-date sentences)
 EN_FIX.forEach(function(f){ var st = STATIONS[f[0]]; if (st && st.opts && st.opts[f[1]] && st.opts[f[1]].hot[f[2]]) st.opts[f[1]].hot[f[2]].d = f[3]; });
 var ROOM_TEXT = {
   en: {
-    'R101': 'Station 1 · Ankommen & Anmeldung. Guests walk from the Windfang straight to the curved, floating white reception desk with two dedicated check-in screens, in front of an oak-panelled welcome wall; the Merz logo hologram stands to the left. The west part of the hall is the history wall with its wall-to-floor LED screen. Glossy white floor, a futuristic light ceiling of layered floating rafts and curved light lines, a moss wall, a hologram character in the corner by the stairs and a Bauhaus lounge corner by the Forum door.',
+    'R101': 'Station 1 · Ankommen & Anmeldung. Guests walk from the Windfang straight to the curved, floating white reception desk with two dedicated check-in screens, in front of an oak-panelled welcome wall; the Merz logo hologram stands to the left. The west part of the hall is the history wall with its wall-to-floor LED screen. Glossy white floor, a futuristic light ceiling of layered floating rafts and curved light lines, a moss wall, a hologram character in the corner by the stairs and a Bauhaus waiting corner by the Forum door.',
     'R113a': 'Station 2 · Forum: debrief and waiting room with a huge roll-up LED wall in a stone frame, information kiosks along the window and three layouts (briefing, hybrid, lounge). The mobile wall on the canteen side has eight elements. Oak slat ceiling with curved light sails.',
     'R203': 'Station 5 · Lounge. Interactive touch table on a blue round carpet, the Verhältnis installation along the long wall, a life-size hologram character, the Xeomin molecule hologram, lounge seating under a white ceiling with a floating light raft and light ring. Glass doors lead to the Showroom, a terrace door to Dachterrasse 2.',
     'R202': 'Stations 3 and 4 · Showroom in a futuristic design: the live demonstration in the west part (glowing heptagon inlay, light halo, bench arc, robotic camera), a heptagon light portal, and the VR station at the east end (Option A half dome or Option B movie chairs). The mobile wall (five elements) can close off the live-demo area.',
@@ -3226,7 +3246,7 @@ var ROOM_TEXT = {
     'R107': 'Aufzug R107: stufenloser Weg ins Obergeschoss.', 'R106': 'Das Treppenhaus zur Erlebnisebene; der Aufzug R107 daneben hält den Weg stufenlos.', 'R105': 'BMA- und Sicherheitsraum.',
     'R102': 'Vorgeschlagener Stützpunkt für Buchungen, Guides und Botschafter-Briefings, direkt neben dem Empfang.', 'R130': 'Mitarbeiter- und Büroeingang an der Nordfassade.', 'R131': 'Putzmittelraum.',
     'R114c': 'Ausgabetheke, zur Kantine hin offen.', 'R112': 'Stuhllager für das Forum.', 'R110': 'Barrierefreies WC.', 'R108': 'Flur zwischen WC-Kern und Forum.',
-    'R101': 'Station 1 · Ankommen & Anmeldung. Vom Windfang geht es direkt zum geschwungenen, schwebenden weißen Empfangstresen mit zwei eigenen Anmelde-Bildschirmen vor einer Eichen-Welcome-Wand; links steht das Merz-Logo-Hologramm. Im westlichen Teil der Halle liegt die Geschichtswand mit LED-Screen bis zum Boden. Glänzend weißer Boden, futuristische Lichtdecke aus geschichteten schwebenden Segeln und geschwungenen Lichtlinien, Mooswand, Hologramm-Figur in der Ecke an der Treppe und Bauhaus-Lounge-Ecke an der Forumstür.',
+    'R101': 'Station 1 · Ankommen & Anmeldung. Vom Windfang geht es direkt zum geschwungenen, schwebenden weißen Empfangstresen mit zwei eigenen Anmelde-Bildschirmen vor einer Eichen-Welcome-Wand; links steht das Merz-Logo-Hologramm. Im westlichen Teil der Halle liegt die Geschichtswand mit LED-Screen bis zum Boden. Glänzend weißer Boden, futuristische Lichtdecke aus geschichteten schwebenden Segeln und geschwungenen Lichtlinien, Mooswand, Hologramm-Figur in der Ecke an der Treppe und Bauhaus-Warte-Ecke an der Forumstür.',
     'R100': 'Besuchereingang vom Vorplatz an der Südwestecke mit bodengleichen Sauberlaufzonen. Hier beginnt die Leitlinie.',
     'R113b': 'Kantine „Tafel“. Die tägliche Kantine der Mitarbeitenden. Speiseplan und interne News laufen gemeinsam auf dem Tafel-Screen an der Nordwand direkt neben der Kantinentür. Sie setzt das Design des Forums fort: derselbe helle geschliffene Betonboden, Eichenlamellendecke mit kleinen hängenden Lichtpunkten und Freischwinger im Cesca-Stil an Eichentischen.',
     'R113a': 'Station 2 · Forum: Debrief- und Warteraum mit großer rollbarer LED-Wand im Steinrahmen, Info-Kiosken am Fenster und drei Layouts (Briefing, Hybrid, Lounge). Die mobile Trennwand zur Kantine hat acht Elemente. Eichenlamellendecke mit geschwungenen Lichtsegeln.',
