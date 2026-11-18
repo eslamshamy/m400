@@ -42,6 +42,18 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid
 #lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 #btnHide{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--ink)}
 #btnHide svg{width:20px;height:20px}
+.xcl{flex:0 0 auto;width:24px;height:24px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--muted);font-size:15px;line-height:1;padding:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;pointer-events:auto}
+.xcl:hover{background:var(--chip-hover);color:var(--ink)}
+#views .xcl,#lang .xcl{min-width:0;min-height:0;width:24px;height:24px;padding:0;align-self:center;margin:0 3px 0 2px;border-radius:999px;background:var(--chip);color:var(--muted)}
+#brand .xcl{position:absolute;top:8px;right:8px;z-index:2}
+#layers{position:relative}#layers .lhead{padding-right:44px}#layers > .xcl{position:absolute;top:11px;right:10px;z-index:2}
+#layers > .xcl ~ .lhead svg{margin-right:4px}
+.hint .xcl{width:18px;height:18px;font-size:12px;margin-left:8px;vertical-align:middle}
+#journey > .xcl{align-self:center}
+.closed{display:none !important}
+#btnRestore{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--ink)}
+#btnRestore[hidden]{display:none}
+#btnRestore svg{width:20px;height:20px}
 #btnShow{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:none;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;z-index:5;color:var(--ink)}
 body.ui-hidden .top, body.ui-hidden #journey, body.ui-hidden #station, body.ui-hidden #info, body.ui-hidden .hint, body.ui-hidden #labels{display:none !important}
 body.ui-hidden #btnShow{display:block}
@@ -188,6 +200,7 @@ body.touring #brand, body.touring .hint.ov{display:none}
 
 <div class="top">
   <header id="brand" class="panel">
+    <button type="button" class="xcl" data-close="brand" title="Close" aria-label="Close" data-i18n-title="closeWin">×</button>
     <div class="brandrow"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><polygon points="20,2 34.1,8.8 37.5,24 27.8,36.2 12.2,36.2 2.5,24 5.9,8.8" fill="none" stroke="currentColor" stroke-width="3"/><text x="20" y="24.5" text-anchor="middle" font-family="Jost,Futura,sans-serif" font-weight="700" font-size="10.5" fill="currentColor">MERZ</text></svg><h1>Gebäude 400</h1></div>
     <p class="sub" data-i18n="brandSub">Welcome &amp; Experience Center · Merz, Dessau</p>
   </header>
@@ -196,10 +209,13 @@ body.touring #brand, body.touring .hint.ov{display:none}
     <button type="button" data-mode="exploded" aria-pressed="false" title="Exploded" data-i18n-title="viewExploded"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 4-9 4-9-4z"/><path d="M3 14l9 4 9-4"/></svg><span class="lbl" data-i18n="viewExploded">Exploded</span></button>
     <button type="button" data-mode="eg" aria-pressed="false" title="Ground floor" data-i18n-title="viewEG"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M11 5v8h10"/></svg><span class="lbl" data-i18n="viewEG">Ground floor</span></button>
     <button type="button" data-mode="og" aria-pressed="false" title="Upper floor" data-i18n-title="viewOG"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M13 5v14M3 12h10"/></svg><span class="lbl" data-i18n="viewOG">Upper floor</span></button>
+    <button type="button" class="xcl" data-close="views" title="Close" aria-label="Close" data-i18n-title="closeWin">×</button>
   </nav>
-  <div id="lang" class="panel" role="group" aria-label="Language / Sprache"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="de" aria-pressed="false">DE</button></div>
+  <div id="lang" class="panel" role="group" aria-label="Language / Sprache"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="de" aria-pressed="false">DE</button><button type="button" class="xcl" data-close="lang" title="Close" aria-label="Close" data-i18n-title="closeWin">×</button></div>
   <button type="button" id="btnHide" class="panel" title="Hide the interface (H)" aria-label="Hide the interface" data-i18n-title="hideUI"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3l18 18M10.6 6.1A9.8 9.8 0 0 1 12 6c5 0 9 6 9 6a16 16 0 0 1-3 3.5M6.5 7.6C4.3 9.2 3 12 3 12s4 6 9 6a8.6 8.6 0 0 0 3.4-.7"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button>
+  <button type="button" id="btnRestore" class="panel" hidden title="Show closed windows" aria-label="Show closed windows" data-i18n-title="restoreWin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/><path d="M12 12.5v5M9.5 15H14.5"/></svg></button>
   <aside id="layers" class="panel" data-open="true" aria-label="Layers and light">
+    <button type="button" class="xcl" data-close="layers" title="Close" aria-label="Close" data-i18n-title="closeWin">×</button>
     <button type="button" class="lhead" aria-expanded="true" aria-controls="lbody"><span data-i18n="layers">Layers &amp; light</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
     <div class="lbody" id="lbody">
       <div class="sunbox">
@@ -207,6 +223,7 @@ body.touring #brand, body.touring .hint.ov{display:none}
         <input type="range" id="sun" min="6" max="20.5" step="0.25" value="15.5" aria-label="Time of day">
         <div class="sunscale"><span data-i18n="morning">Morning</span><span data-i18n="noon">Noon</span><span data-i18n="evening">Evening</span></div>
       </div>
+      <div hidden>
       <div>
         <p class="optlbl" data-i18n="forumLayout">Forum layout</p>
         <div class="vtoggle vr" role="group" aria-label="Forum layout" style="grid-template-columns:repeat(3,1fr)">
@@ -226,13 +243,14 @@ body.touring #brand, body.touring .hint.ov{display:none}
       <label class="sw"><span data-i18n="curtains">Curtains closed<small>Block the sun at every window</small></span><input type="checkbox" id="tCurt"><span class="tr"></span></label>
       <label class="sw"><span data-i18n="wallF">Forum mobile wall closed<small>Separates Forum and canteen</small></span><input type="checkbox" id="tWallF" checked><span class="tr"></span></label>
       <label class="sw"><span data-i18n="wallS">Showroom mobile wall closed<small>Closes off the live-demo area</small></span><input type="checkbox" id="tWallS"><span class="tr"></span></label>
+      </div>
       <p class="optlbl" style="margin:4px 0 -6px" data-i18n="layersHdr">Layers</p>
       <label class="sw hl"><span data-i18n="focus">Highlight journey rooms<small>Fades every room the visit doesn’t use</small></span><input type="checkbox" id="tFocus"><span class="tr"></span></label>
       <label class="sw"><span data-i18n="route">Visitor route</span><input type="checkbox" id="tRoute" checked><span class="tr"></span></label>
       <label class="sw"><span data-i18n="labels">Station labels</span><input type="checkbox" id="tLabels" checked><span class="tr"></span></label>
       <label class="sw"><span data-i18n="furn">Furniture &amp; décor</span><input type="checkbox" id="tFurn" checked><span class="tr"></span></label>
       <label class="sw"><span data-i18n="a11y">Accessibility notes</span><input type="checkbox" id="tA11y"><span class="tr"></span></label>
-      <label class="sw"><span data-i18n="accent">Magenta accents<small>Classic Merz pink instead of the blue accents</small></span><input type="checkbox" id="tAccent"><span class="tr"></span></label>
+      <label class="sw"><span data-i18n="accent">Magenta accents<small>Classic Merz pink · switch off for blue accents</small></span><input type="checkbox" id="tAccent"><span class="tr"></span></label>
       <label class="sw"><span data-i18n="plan">Plan drawing underlay</span><input type="checkbox" id="tPlan"><span class="tr"></span></label>
       <details>
         <summary data-i18n="colourKey">Colour key</summary>
@@ -253,7 +271,7 @@ body.touring #brand, body.touring .hint.ov{display:none}
 
 <section id="station" class="panel" hidden aria-live="polite" aria-label="Current stop">
   <div class="st-scroll">
-    <div class="st-top"><span id="sStep">Stop 1 of 6</span><span class="st-r"><span class="badge" id="sDur"></span><button type="button" id="btnMin" class="mini" aria-expanded="true" aria-label="Collapse stop details">–</button></span></div>
+    <div class="st-top"><span id="sStep">Stop 1 of 6</span><span class="st-r"><span class="badge" id="sDur"></span><button type="button" id="btnMin" class="mini" aria-expanded="true" aria-label="Collapse stop details">–</button><button type="button" class="xcl" data-close="station" title="Close" aria-label="Close" data-i18n-title="closeWin">×</button></span></div>
     <h2 id="sName"></h2>
     <p class="where" id="sWhere"></p>
     <div class="vtoggle" role="group" aria-label="How to view this space">
@@ -288,11 +306,12 @@ body.touring #brand, body.touring .hint.ov{display:none}
   </div>
 </aside>
 <button type="button" id="btnShow" class="panel" aria-label="Show the interface" data-i18n="showUI">Show interface</button>
-<div class="hint" id="hint">Drag to orbit · right-drag to pan · scroll to zoom · click a room for details</div>
+<div class="hint" id="hintBox"><span id="hint">Drag to orbit · right-drag to pan · scroll to zoom · click a room for details</span><button type="button" class="xcl" data-close="hintBox" title="Close" aria-label="Close" data-i18n-title="closeWin">×</button></div>
 
 <section id="journey" class="panel" aria-label="Visitor journey">
   <div class="steps" id="steps" role="list"></div>
   <button type="button" class="go" id="btnTour"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span data-i18n="walk">Walk the journey</span></button>
+  <button type="button" class="xcl" data-close="journey" title="Close" aria-label="Close" data-i18n-title="closeWin">×</button>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
@@ -411,7 +430,7 @@ function placeSun(){
 // ---------- Textures ----------
 // accent colour scheme: luxurious Merz blues (default) or the classic Merz magenta, switchable in Layers & light
 var ACC = { pink: false };
-try { ACC.pink = localStorage.getItem('g400-accent') === 'pink'; } catch (e) {}
+ACC.pink = true; try { ACC.pink = localStorage.getItem('g400-accent') !== 'blue'; } catch (e) {}
 function A(blue, pink){ return ACC.pink ? pink : blue; }
 var canvasReg = [], accMats = [], accTiles = [];
 function accMat(m, blue, pink){ accMats.push([m, blue, pink]); m.color.setHex(A(blue, pink)); return m; }
@@ -714,7 +733,7 @@ var EG_ROOMS = [
   { id: 'R110', name: 'WC barrierefrei', cat: 'circ', text: 'Accessible WC.', rects: [[28.65, 12.52, 31.05, 14.97]] },
   { id: 'R109a', name: 'Vorraum WC D', cat: 'circ', rects: [[31.05, 12.52, 33.3, 14.97]] },
   { id: 'R108', name: 'Flur', cat: 'circ', text: 'Corridor between the WC core and the Forum.', rects: [[22.08, 14.97, 33.3, 16.8]] },
-  { id: 'R101', name: 'Empfang', cat: 'visit', area: 74.89, station: 1, text: 'Station 1 · Ankommen & Anmeldung. Guests come in through the Windfang and the 4.67 m glass sliding door and walk straight towards the reception desk. On their left a seamless LED surface runs from the wall onto the floor; self check-in kiosks stand on the right. The west part of the hall is a waiting corner in front of the history wall. Oak floor, oak slat ceiling with light sails.', rects: [[33.3, 7.55, 38.45, 16.8], [38.45, 8.62, W, 14.55]] },
+  { id: 'R101', name: 'Empfang', cat: 'visit', area: 74.89, station: 1, text: 'Station 1 · Ankommen & Anmeldung. Guests come in through the Windfang and the 4.67 m glass sliding door and walk straight towards the reception desk. On their left a seamless LED surface runs from the wall onto the floor; self check-in kiosks stand on the right. The west part of the hall is a waiting corner in front of the history wall. Glossy white floor, white ceiling with a floating light raft and curved light lines.', rects: [[33.3, 7.55, 38.45, 16.8], [38.45, 8.62, W, 14.55]] },
   { id: 'R100', name: 'Windfang', cat: 'visit', area: 10.85, text: 'Visitor entrance from the forecourt on the south-west corner, with flush entrance mats. The Leitlinie enters the building here.', rects: [[38.45, 14.55, W, D2]] },
   { id: 'R113b', name: 'Kantine “Tafel”', cat: 'hosp', area: 207.94, text: 'Kantine “Tafel”. The daily canteen for employees. Menu and internal news run together on the Tafel screen by the serving counter. Felt-baffle ceiling with light lines for acoustics.', rects: [[0, 16.8, 21.8, D]] },
   { id: 'R113a', name: 'Forum', cat: 'forum', area: 167.58, station: 2, nw: true, text: 'Station 2 · Forum: debrief and waiting room. Guests are briefed in front of a large LED wall. While they wait, standing touch kiosks tell the history of the company. The existing 3.5 m mobile wall separates it from the canteen. Felt-baffle ceiling with light lines.', rects: [[21.8, 16.8, 38.45, D2], [21.8, D2, WE, D]] }
@@ -737,7 +756,7 @@ var OG_ROOMS = [
   { id: 'R212/R213', name: 'Umkleiden & Duschen', cat: 'staff', rects: [[15.3, 10.45, 22.4, D2]] },
   { id: 'R209', name: 'Betriebsrat', cat: 'staff', area: 54.55, rects: [[22.4, 10.45, 31.4, D2]] },
   { id: 'R204', name: 'Flur', cat: 'circ', area: 16.2, nw: true, rects: [[27.15, 5.33, 33.1, 6.55], [30.05, 6.55, 31.4, 8.66], [31.4, 6.55, 33.1, 7.6], [31.4, 7.6, 38.1, 9.0]] },
-  { id: 'R203', name: 'Lounge / Teeküche', cat: 'visit', area: 58.85, station: 6, text: 'Station 6 · Lounge. Interactive touch table on a blue round carpet: place a Merz product on it and the table shows manufacturing, use and availability. Life-size hologram character, portrait wall above the tea kitchen, lounge seating under an oak slat ceiling with a light ring. A glass wall with two doors leads to the Showroom.', rects: [[31.4, 9.0, 38.1, D2]] },
+  { id: 'R203', name: 'Lounge / Teeküche', cat: 'visit', area: 58.85, station: 6, text: 'Station 6 · Lounge. Interactive touch table on a blue round carpet: place a Merz product on it and the table shows manufacturing, use and availability. Life-size hologram character, portrait wall above the tea kitchen, lounge seating under a white ceiling with a floating light raft and light ring. A glass wall with two doors leads to the Showroom.', rects: [[31.4, 9.0, 38.1, D2]] },
   { id: 'R202', name: 'Showroom', cat: 'core', area: 88.33, station: 3, text: 'Stations 3 to 5 · Showroom. The VR station sits at the east end (Option A half dome or Option B movie chairs), the Verhältnis installation in the middle, and the Behandlungsstation for live demonstrations in the west part. The room’s own mobile wall (five elements) can close off the live-demo area.', rects: [[38.1, 0, W, D2]] }
 ];
 var ROOF_ROOMS = [
@@ -1216,37 +1235,82 @@ solid(furnEG, 38.65, 8.75, 43.7, 8.8, 0.03, 2.97, new THREE.MeshBasicMaterial({ 
   var mon = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.36, 0.03), M.furnDark); mon.position.copy(V(41.9, 10.65, 1.32)); furnEG.add(mon);
 })();
 person(furnEG, 42.9, 9.85, 0);
-// hologram: a rotating Xeomin molecule floating above a projection pedestal
-var molGroup = new THREE.Group();
-(function(){
-  var px = 39.4, py = 11.9;
-  var ped = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.48, 0.32, 48), M.furnDark); ped.position.copy(V(px, py, 0.16)); ped.castShadow = true; furnEG.add(ped);
-  var ring = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.014, 6, 48), M.coolLight); ring.rotation.x = Math.PI / 2; ring.position.copy(V(px, py, 0.325)); furnEG.add(ring);
-  var lens = new THREE.Mesh(new THREE.CircleGeometry(0.34, 48), new THREE.MeshBasicMaterial({ color: 0x7FD4FF, toneMapped: false })); lens.rotation.x = -Math.PI / 2; lens.position.copy(V(px, py, 0.322)); furnEG.add(lens);
+// hologram stations: a projection pedestal with a floating, slowly turning hologram above it
+// ground floor: the Merz logo (heptagon + wordmark); first floor lounge: the Xeomin molecule
+anim.holos = [];
+function holoStation(group, px, py, base, kind){
+  var ped = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.48, 0.32, 48), M.furnDark); ped.position.copy(V(px, py, base + 0.16)); ped.castShadow = true; group.add(ped);
+  var ring = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.014, 6, 48), M.coolLight); ring.rotation.x = Math.PI / 2; ring.position.copy(V(px, py, base + 0.325)); group.add(ring);
+  var lens = new THREE.Mesh(new THREE.CircleGeometry(0.34, 48), new THREE.MeshBasicMaterial({ color: 0x7FD4FF, toneMapped: false })); lens.rotation.x = -Math.PI / 2; lens.position.copy(V(px, py, base + 0.322)); group.add(lens);
   var beam = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.34, 1.75, 48, 1, true), new THREE.MeshBasicMaterial({ color: 0x3FA9FF, transparent: true, opacity: 0.05, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false }));
-  beam.position.copy(V(px, py, 0.32 + 0.875)); furnEG.add(beam);
-  // stylised ball-and-stick structure (illustrative, not a literal model of the protein)
-  var rnd = seeded(77), atoms = [[0, 0, 0]], bonds = [];
-  for (var i = 1; i < 34; i++){
-    var p = atoms[Math.floor(rnd() * atoms.length)], th = rnd() * Math.PI * 2, ph = (rnd() - 0.5) * Math.PI, d = 0.14;
-    var a = [p[0] + Math.cos(th) * Math.cos(ph) * d, p[1] + Math.sin(ph) * d, p[2] + Math.sin(th) * Math.cos(ph) * d];
-    if (Math.hypot(a[0], a[1], a[2]) > 0.42) { i--; continue; }
-    atoms.push(a); bonds.push([atoms.indexOf(p), atoms.length - 1]);
+  beam.position.copy(V(px, py, base + 0.32 + 0.875)); group.add(beam);
+  function hm(c, o){ return new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: o, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false, side: THREE.DoubleSide }); }
+  var holoBlue = hm(0x6FD0FF, 0.85), holoWhite = hm(0xE8F6FF, 0.9);
+  var hg = new THREE.Group(), lbl = null;
+  if (kind === 'merz'){
+    // heptagon outline as a glowing tube, a thinner inner echo, and the MERZ wordmark on two back-to-back planes
+    var hp = [], hp2 = [];
+    for (var j = 0; j < 7; j++){ var a = j * 2 * Math.PI / 7 - Math.PI / 2; hp.push(new THREE.Vector3(Math.cos(a) * 0.46, -Math.sin(a) * 0.46, 0)); hp2.push(new THREE.Vector3(Math.cos(a) * 0.38, -Math.sin(a) * 0.38, 0)); }
+    var curve = new THREE.CatmullRomCurve3(hp, true, 'catmullrom', 0.02), curve2 = new THREE.CatmullRomCurve3(hp2, true, 'catmullrom', 0.02);
+    var logoMat = new THREE.MeshBasicMaterial({ color: 0x5FB4F2, transparent: true, opacity: 0.92, depthWrite: false, toneMapped: false });
+    hg.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 140, 0.022, 8, true), logoMat));
+    hg.add(new THREE.Mesh(new THREE.TubeGeometry(curve2, 140, 0.007, 6, true), holoBlue));
+    var wTex = canvasTex(512, 256, function(g, w, h){ g.clearRect(0, 0, w, h); g.textAlign = 'center'; g.textBaseline = 'middle'; g.shadowColor = 'rgba(40,140,230,.9)'; g.shadowBlur = 20; g.fillStyle = '#3FA2EE'; g.font = '700 150px Jost, Futura, sans-serif'; g.fillText('MERZ', w / 2, h / 2 + 6); });
+    [0, Math.PI].forEach(function(r){ var p = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.31), new THREE.MeshBasicMaterial({ map: wTex, transparent: true, depthWrite: false, toneMapped: false })); p.rotation.y = r; p.position.z = r ? -0.002 : 0.002; hg.add(p); });
+    // sparkle particles orbiting the logo
+    var rnd0 = seeded(41), sg = new THREE.SphereGeometry(0.008, 6, 4);
+    for (var k = 0; k < 40; k++){ var s = new THREE.Mesh(sg, k % 3 ? holoBlue : holoWhite), an = rnd0() * Math.PI * 2, rr = 0.5 + rnd0() * 0.18; s.position.set(Math.cos(an) * rr, (rnd0() - 0.5) * 0.9, Math.sin(an) * rr * 0.4); hg.add(s); }
+    hg.position.copy(V(px, py, base + 1.5)); hg.scale.setScalar(1.15);
+  } else {
+    // stylised ball-and-stick structure (illustrative, not a literal model of the protein)
+    var holoRed = hm(0xFF5A7A, 0.85), bondMat = hm(0x9FDCFF, 0.55);
+    var rnd = seeded(77), atoms = [[0, 0, 0]], bonds = [];
+    for (var i = 1; i < 34; i++){
+      var p = atoms[Math.floor(rnd() * atoms.length)], th = rnd() * Math.PI * 2, ph = (rnd() - 0.5) * Math.PI, d = 0.14;
+      var at = [p[0] + Math.cos(th) * Math.cos(ph) * d, p[1] + Math.sin(ph) * d, p[2] + Math.sin(th) * Math.cos(ph) * d];
+      if (Math.hypot(at[0], at[1], at[2]) > 0.42) { i--; continue; }
+      atoms.push(at); bonds.push([atoms.indexOf(p), atoms.length - 1]);
+    }
+    var ag = new THREE.SphereGeometry(1, 14, 10), up = new THREE.Vector3(0, 1, 0);
+    atoms.forEach(function(a, i){ var m = new THREE.Mesh(ag, i % 7 === 3 ? holoRed : i % 5 === 0 ? holoWhite : holoBlue); m.scale.setScalar(i % 5 === 0 ? 0.02 : 0.03); m.position.set(a[0], a[1], a[2]); hg.add(m); });
+    bonds.forEach(function(b){ var A3 = new THREE.Vector3().fromArray(atoms[b[0]]), B3 = new THREE.Vector3().fromArray(atoms[b[1]]), dd = B3.clone().sub(A3);
+      var c = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, dd.length(), 6), bondMat); c.position.copy(A3).add(B3).multiplyScalar(0.5); c.quaternion.setFromUnitVectors(up, dd.normalize()); hg.add(c); });
+    hg.position.copy(V(px, py, base + 1.45)); hg.scale.setScalar(1.45);
+    var lblTex = canvasTex(512, 128, function(g, w, h){ g.clearRect(0, 0, w, h); g.textAlign = 'center'; g.shadowColor = '#6FD0FF'; g.shadowBlur = 18; g.fillStyle = '#E8F6FF'; g.font = '500 64px Jost, sans-serif'; g.fillText('XEOMIN®', w / 2, 80); });
+    lbl = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.155), new THREE.MeshBasicMaterial({ map: lblTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, side: THREE.DoubleSide }));
+    lbl.position.copy(V(px, py, base + 2.22)); group.add(lbl);
   }
-  var holoBlue = new THREE.MeshBasicMaterial({ color: 0x6FD0FF, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-  var holoRed = new THREE.MeshBasicMaterial({ color: 0xFF5A7A, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-  var holoWhite = new THREE.MeshBasicMaterial({ color: 0xE8F6FF, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-  var bondMat = new THREE.MeshBasicMaterial({ color: 0x9FDcFF, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-  var ag = new THREE.SphereGeometry(1, 14, 10), up = new THREE.Vector3(0, 1, 0);
-  atoms.forEach(function(a, i){ var m = new THREE.Mesh(ag, i % 7 === 3 ? holoRed : i % 5 === 0 ? holoWhite : holoBlue); m.scale.setScalar(i % 5 === 0 ? 0.02 : 0.03); m.position.set(a[0], a[1], a[2]); molGroup.add(m); });
-  bonds.forEach(function(b){ var A = new THREE.Vector3().fromArray(atoms[b[0]]), B = new THREE.Vector3().fromArray(atoms[b[1]]), d = B.clone().sub(A);
-    var c = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, d.length(), 6), bondMat); c.position.copy(A).add(B).multiplyScalar(0.5); c.quaternion.setFromUnitVectors(up, d.normalize()); molGroup.add(c); });
-  molGroup.position.copy(V(px, py, 1.45)); molGroup.scale.setScalar(1.45); furnEG.add(molGroup);
-  var lblTex = canvasTex(512, 128, function(g, w, h){ g.clearRect(0, 0, w, h); g.textAlign = 'center'; g.shadowColor = '#6FD0FF'; g.shadowBlur = 18; g.fillStyle = '#E8F6FF'; g.font = '500 64px Jost, sans-serif'; g.fillText('XEOMIN®', w / 2, 80); });
-  var lbl = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.155), new THREE.MeshBasicMaterial({ map: lblTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, side: THREE.DoubleSide }));
-  lbl.position.copy(V(px, py, 2.22)); furnEG.add(lbl); anim.molLabel = lbl;
+  hg.userData.plan = [px, py]; group.add(hg);
+  anim.holos.push({ g: hg, y: hg.position.y, lbl: lbl, tilt: kind !== 'merz' });
+}
+holoStation(furnEG, 39.4, 11.9, 0, 'merz');
+// Anmeldung: a self check-in kiosk to the right of the reception desk, facing guests as they come in from the Windfang
+(function(){
+  var kx = 43.3, ky = 12.35, g = new THREE.Group(); g.position.copy(V(kx, ky, 0)); g.rotation.y = -0.45;
+  var body = std(0xF4F2EE, { roughness: 0.3, envMapIntensity: 0.6 }), dark = M.furnDark;
+  function box(w, h, d, x, y, z, mat){ var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; g.add(m); return m; }
+  box(0.62, 0.04, 0.46, 0, 0.02, 0, dark);                         // plinth
+  box(0.44, 0.92, 0.26, 0, 0.5, -0.03, body);                      // column
+  box(0.4, 0.012, 0.012, 0, 0.06, 0.105, M.lightLine);            // toe light
+  var head = new THREE.Group(); head.position.set(0, 1.08, 0.02); head.rotation.x = -0.42; g.add(head);
+  var hb = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.42, 0.06), body); hb.castShadow = true; head.add(hb);
+  var scrTex = canvasTex(512, 360, function(c, w, h){
+    var gr = c.createLinearGradient(0, 0, w, h); gr.addColorStop(0, '#04142C'); gr.addColorStop(1, '#0A3A72'); c.fillStyle = gr; c.fillRect(0, 0, w, h);
+    brandLogo(c, w / 2, 70, 34, 1, 0.4);
+    c.fillStyle = '#FFFFFF'; c.textAlign = 'center'; c.font = '500 40px Jost, sans-serif'; c.fillText('Anmeldung · Check-in', w / 2, 160);
+    c.fillStyle = 'rgba(' + A('44,116,216', '214,12,140') + ',1)'; c.fillRect(w / 2 - 150, 200, 300, 64);
+    c.fillStyle = '#FFFFFF'; c.font = '500 28px Jost, sans-serif'; c.fillText('QR-Code scannen', w / 2, 242);
+    c.fillStyle = 'rgba(200,230,255,.75)'; c.font = '22px Jost, sans-serif'; c.fillText('Badge drucken · Print your badge', w / 2, 308);
+  });
+  var scr = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.365), new THREE.MeshBasicMaterial({ map: scrTex, toneMapped: false })); scr.position.z = 0.031; head.add(scr);
+  box(0.22, 0.02, 0.1, 0, 0.88, 0.1, dark);                        // badge printer slot
+  box(0.16, 0.004, 0.02, 0, 0.892, 0.15, M.coolLight);
+  // small header sign above the kiosk
+  var signTex = canvasTex(512, 96, function(c, w, h){ c.fillStyle = '#0B2A52'; c.fillRect(0, 0, w, h); c.fillStyle = '#FFFFFF'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '500 44px Jost, sans-serif'; c.fillText('ANMELDUNG', w / 2, h / 2 + 2); });
+  var sign = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.11, 0.02), [body, body, body, body, new THREE.MeshBasicMaterial({ map: signTex, toneMapped: false }), body]); sign.position.set(0, 1.42, -0.12); g.add(sign);
+  box(0.03, 0.2, 0.03, 0, 1.28, -0.12, body);
+  g.traverse(function(o){ o.userData.plan = [kx, ky]; }); furnEG.add(g);
 })();
-anim.mol = molGroup;
 // hanging light installation: strings of warm dots forming a wave above the lobby
 (function(){
   var pts = [];
@@ -1276,7 +1340,6 @@ function planter(grp, x0, y0, x1, y1, base){
       fr.position.copy(V(px + Math.cos(ang) * 0.2, py + Math.sin(ang) * 0.2, base + 0.85)); fr.rotation.set(Math.sin(ang) * 0.55, 0, -Math.cos(ang) * 0.55); fr.castShadow = true; grp.add(fr); } }
   }
 }
-planter(furnEG, 43.0, 8.85, 43.75, 10.3, 0);
 planter(furnEG, 38.6, 8.85, 39.6, 10.0, 0);
 // history wall: the wall-to-floor LED screen tells the company story; waiting chairs face it
 var historyLedTex = canvasTex(2048, 512, function(g, w, h){
@@ -1305,10 +1368,6 @@ solid(furnEG, 36.0, 15.6, 37.0, 16.6, 0.25, 0.27, M.coolLight, { edges: false })
 var holoLobby = new THREE.Mesh(new THREE.PlaneGeometry(0.75, 1.6), holoMat);
 holoLobby.position.copy(V(36.5, 16.05, 1.15)); holoLobby.rotation.y = Math.PI; furnEG.add(holoLobby);
 wallPanel(furnEG, 'h', 7.55, 36.9, 38.4, 2.3, 2.85, 1, new THREE.MeshBasicMaterial({ map: signTex, toneMapped: false }), 0.03);
-slats(ceilEG, 33.4, 7.65, 38.45, 16.75, 3.0, 'y', 0.14, 0.05, 0.14, M.oak);
-slats(ceilEG, 38.45, 8.7, 43.8, 14.5, 3.0, 'y', 0.14, 0.05, 0.14, M.oak);
-[40.0, 41.4, 42.8].forEach(function(x){ lightLine(ceilEG, x - 0.03, 8.85, x + 0.03, 14.4, 2.84); });
-lightLine(ceilEG, 35.9, 8.0, 35.96, 16.6, 2.84);
 // floor Leitlinie in brand colours: windfang → reception desk → Forum, and → stairs
 stripes(furnEG, [[41.5, 16.6], [41.5, 12.1], [39.2, 12.8], [37.6, 13.4], [35.6, 15.2], [34.4, 16.8], [34.4, 18.6], [33.4, 21.2]], 0);
 stripes(furnEG, [[37.6, 13.4], [36.6, 10.4], [36.3, 8.0]], 0);
@@ -1657,7 +1716,7 @@ M.vrBlack = std(0x15181C, { roughness: 0.7 });
 M.futMag = accMat(new THREE.MeshBasicMaterial({ color: 0x2C74D8, toneMapped: false }), 0x2C74D8, 0xD60C8C); // royal Merz blue / magenta
 M.futBlue = new THREE.MeshBasicMaterial({ color: 0x9CD2F7, toneMapped: false }); // ice blue
 var vrRoom = new THREE.Group(), vrA = new THREE.Group(), vrB = new THREE.Group(); furnOG.add(vrRoom, vrA, vrB); vrB.visible = false;
-var vrOption = 'A', OPT = { vr: 'A', forum: 'brief' };
+var vrOption = 'A', OPT = { vr: 'A', forum: 'hybrid' };
 (function(){
   var b = OG;
   // room finish from the concept: dark lower band with a blue light line, white wall above, Merz logo on the side wall
@@ -1729,7 +1788,6 @@ var tableMat = new THREE.MeshBasicMaterial({ map: tableTex, toneMapped: false })
 })();
 person(furnOG, 34.2, 13.0, OG); person(furnOG, 35.3, 10.55, OG, std(0xDCE8F5, { roughness: 0.8 }));
 var ringL = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.035, 8, 64), M.lightLine); ringL.rotation.x = Math.PI / 2; ringL.position.copy(V(34.7, 11.8, OG + 2.8)); ceilOG.add(ringL);
-slats(ceilOG, 31.45, 9.05, WE - 0.05, 17.1, OG + 3.0, 'x', 0.14, 0.05, 0.14, M.oak);
 // oak-clad long wall behind Verhältnis, with warm cove light
 wallPanel(furnOG, 'v', 31.4, 9.1, 17.0, OG, OG + 3.0, 1, M.oakClad, 0.04);
 lightLine(furnOG, 31.49, 9.1, 31.51, 17.0, OG + 2.93, M.lightLine);
@@ -1746,6 +1804,7 @@ anim.holo = holo; anim.holoBase = holo.position.y; anim.holo2 = holoLobby;
 [[36.2, 14.1, 1.0], [37.3, 14.5, 0.8]].forEach(function(p){
   var pb = new THREE.Mesh(new THREE.SphereGeometry(0.5, 24, 16), M.felt); pb.scale.set(p[2] * 1.4, 0.45, p[2]); pb.position.copy(V(p[0], p[1], OG + 0.22)); pb.castShadow = true; furnOG.add(pb);
 });
+holoStation(furnOG, 36.9, 15.85, OG, 'mol');
 stripes(furnOG, [[37.6, 9.95], [36.2, 10.2], [35.2, 10.8]], OG);
 // Betriebsrat, Technik, Fitness
 solid(furnOG, 23.6, 11.6, 27.6, 13.0, OG + 0.7, OG + 0.76, M.furn); solid(furnOG, 25.4, 12.1, 25.8, 12.5, OG, OG + 0.7, M.furnDark);
@@ -1924,6 +1983,155 @@ anim.fut = [];
   [31.2, 34.3, 37.4].forEach(function(x){ solid(furnRoof, x - 0.04, 21.4, x + 0.04, 21.75, d, d + 0.4, M.furnDark, { edges: false }); });
 })();
 
+// ---------- Organic white interior: glossy white floors, floating light rafts, curved light lines, moss walls, fluted backlit walls ----------
+M.ceilWhite = std(0xF6F5F2, { roughness: 0.9 });
+M.raft = std(0xF8F7F4, { roughness: 0.55 });
+M.glowPanel = new THREE.MeshBasicMaterial({ color: 0xFFF8EE, toneMapped: false, side: THREE.DoubleSide });
+M.coveWarm = new THREE.MeshBasicMaterial({ color: 0xFFDDB0, toneMapped: false });
+M.coveCool = new THREE.MeshBasicMaterial({ color: 0xF4FBFF, toneMapped: false });
+M.fluted = std(0xF4F1EB, { roughness: 0.4, envMapIntensity: 0.6 });
+M.sculpt = std(0xE9E6E0, { roughness: 0.28, envMapIntensity: 0.55 });
+M.mossFrame = std(0xF3F1EC, { roughness: 0.6 });
+var mossTex = canvasTex(512, 512, function(g, w, h){
+  g.fillStyle = '#26401F'; g.fillRect(0, 0, w, h);
+  var rnd = seeded(91);
+  for (var i = 0; i < 5200; i++){
+    var x = rnd() * w, y = rnd() * h, r = 1 + rnd() * 4.5, k = rnd();
+    g.fillStyle = k < 0.35 ? 'rgba(74,112,46,.85)' : k < 0.7 ? 'rgba(104,140,58,.8)' : k < 0.9 ? 'rgba(46,78,34,.9)' : 'rgba(150,176,82,.75)';
+    g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+  }
+});
+mossTex.wrapS = mossTex.wrapT = THREE.RepeatWrapping; mossTex.repeat.set(1.6, 1.6);
+M.moss = std(0xFFFFFF, { map: mossTex, roughness: 1, side: THREE.DoubleSide });
+M.mossLeafA = std(0x2A4A1E, { roughness: 1, flatShading: true, envMapIntensity: 0.08 }); M.mossLeafB = std(0x3B6428, { roughness: 1, flatShading: true, envMapIntensity: 0.08 }); M.mossLeafC = std(0x557C30, { roughness: 1, flatShading: true, envMapIntensity: 0.08 });
+// rounded polygon (convex or not) as a THREE.Shape; pts in local 2D
+function roundedShape(pts, rad){
+  var s = new THREE.Shape(), n = pts.length;
+  for (var i = 0; i < n; i++){
+    var p = pts[i], a = pts[(i + n - 1) % n], b = pts[(i + 1) % n];
+    var da = Math.hypot(a[0] - p[0], a[1] - p[1]), db = Math.hypot(b[0] - p[0], b[1] - p[1]), r = Math.min(rad, da * 0.45, db * 0.45);
+    var p1 = [p[0] + (a[0] - p[0]) / da * r, p[1] + (a[1] - p[1]) / da * r], p2 = [p[0] + (b[0] - p[0]) / db * r, p[1] + (b[1] - p[1]) / db * r];
+    if (i === 0) s.moveTo(p1[0], p1[1]); else s.lineTo(p1[0], p1[1]);
+    s.quadraticCurveTo(p[0], p[1], p2[0], p2[1]);
+  }
+  s.closePath(); return s;
+}
+function shrink(pts, d){
+  var cx = 0, cy = 0; pts.forEach(function(p){ cx += p[0]; cy += p[1]; }); cx /= pts.length; cy /= pts.length;
+  return pts.map(function(p){ var dx = p[0] - cx, dy = p[1] - cy, L = Math.hypot(dx, dy); return [p[0] - dx / L * d, p[1] - dy / L * d]; });
+}
+// floating ceiling raft: a white organic slab with a glowing panel underneath and a light line along its edge (plan coordinates)
+function lightRaft(group, pts, top, depth, rad){
+  var loc = pts.map(function(p){ return [p[0] - OX, p[1] - OZ]; });
+  var g = new THREE.ExtrudeGeometry(roundedShape(loc, rad), { depth: depth, bevelEnabled: false, curveSegments: 10 });
+  g.rotateX(Math.PI / 2);
+  var m = new THREE.Mesh(g, M.raft); m.position.y = top; m.receiveShadow = true; group.add(m);
+  var inner = shrink(loc, 0.32);
+  var gp = new THREE.ShapeGeometry(roundedShape(inner, rad * 0.7), 10); gp.rotateX(Math.PI / 2);
+  var p = new THREE.Mesh(gp, M.glowPanel); p.position.y = top - depth - 0.004; group.add(p);
+  // hairline of light around the raft edge
+  var pts3 = roundedShape(loc, rad).getSpacedPoints(120).map(function(q){ return new THREE.Vector3(q.x, top - depth - 0.01, q.y); });
+  var tube = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts3, true), 240, 0.012, 5, true), M.coveCool); group.add(tube);
+  m.userData.plan = p.userData.plan = tube.userData.plan = pts[0];
+  return m;
+}
+// curved light line on the ceiling following a rounded path (plan coordinates)
+function lightPath(group, pts, h, rad, closed, mat){
+  var loc = pts.map(function(p){ return [p[0] - OX, p[1] - OZ]; }), path;
+  if (closed) path = roundedShape(loc, rad).getSpacedPoints(160).map(function(q){ return new THREE.Vector3(q.x, h, q.y); });
+  else path = new THREE.CatmullRomCurve3(loc.map(function(q){ return new THREE.Vector3(q[0], h, q[1]); })).getSpacedPoints(120);
+  var t = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(path, !!closed), closed ? 320 : 160, 0.022, 6, !!closed), mat || M.coveCool);
+  t.userData.plan = pts[0]; group.add(t); return t;
+}
+// shape on a wall face: o 'h' (wall along plan x at y=c) or 'v' (along plan y at x=c); pts are [along, height]
+function wallShape(group, o, c, side, pts, rad, mat, off){
+  var loc = pts.map(function(p){ return [p[0] - (o === 'h' ? OX : OZ), p[1]]; });
+  var geo = new THREE.ShapeGeometry(roundedShape(loc, rad), 12);
+  var uv = geo.attributes.uv, pos = geo.attributes.position;
+  for (var i = 0; i < uv.count; i++) uv.setXY(i, pos.getX(i) / 1.4, pos.getY(i) / 1.4);
+  var m = new THREE.Mesh(geo, mat);
+  if (o === 'h') m.position.z = c + side * off - OZ;
+  else { geo.rotateY(-Math.PI / 2); m.position.x = c + side * off - OX; }
+  m.userData.plan = o === 'h' ? [pts[0][0], c] : [c, pts[0][0]];
+  group.add(m); return m;
+}
+function inPoly(pts, x, y){ var ins = false; for (var i = 0, j = pts.length - 1; i < pts.length; j = i++){ var a = pts[i], b = pts[j]; if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) ins = !ins; } return ins; }
+// moss wall: a white recess, the moss bed and tufts of foliage spilling out
+function mossWall(group, o, c, side, pts, rad, seed){
+  wallShape(group, o, c, side, shrink(pts, -0.07), rad + 0.07, M.mossFrame, 0.085);
+  wallShape(group, o, c, side, pts, rad, M.moss, 0.09);
+  var rnd = seeded(seed || 5), minA = 1e9, maxA = -1e9, minH = 1e9, maxH = -1e9, list = [];
+  pts.forEach(function(p){ minA = Math.min(minA, p[0]); maxA = Math.max(maxA, p[0]); minH = Math.min(minH, p[1]); maxH = Math.max(maxH, p[1]); });
+  var inner = shrink(pts, 0.12), n = Math.round((maxA - minA) * (maxH - minH) * 22);
+  for (var i = 0; i < n * 3 && list.length < n; i++){ var a = minA + rnd() * (maxA - minA), h = minH + rnd() * (maxH - minH); if (inPoly(inner, a, h)) list.push([a, h, rnd()]); }
+  var geo = new THREE.IcosahedronGeometry(1, 0), mats = [M.mossLeafA, M.mossLeafB, M.mossLeafC];
+  mats.forEach(function(mat, k){
+    var sub = list.filter(function(e, i){ return i % 3 === k; }), mesh = new THREE.InstancedMesh(geo, mat, sub.length), m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e3 = new THREE.Euler(), sc = new THREE.Vector3(), p = new THREE.Vector3();
+    sub.forEach(function(e, i){
+      var r = 0.022 + e[2] * 0.045, out = 0.09 + r * 0.4;
+      p.copy(o === 'h' ? V(e[0], c + side * out, e[1]) : V(c + side * out, e[0], e[1]));
+      e3.set(e[2] * 3, e[2] * 5, e[2] * 2); q.setFromEuler(e3); sc.set(r, r * 0.7, r * (0.6 + e[2]));
+      m4.compose(p, q, sc); mesh.setMatrixAt(i, m4);
+    });
+    mesh.userData.plan = o === 'h' ? [pts[0][0], c] : [c, pts[0][0]]; group.add(mesh);
+  });
+}
+// fluted wall: vertical white reeds with warm light grazing them from a cove at the top and a recess at the floor
+function flutedWall(group, o, c, side, a, b, lo, hi){
+  var step = 0.075, n = Math.floor((b - a) / step), mesh = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.036, 0.036, hi - lo, 10), M.fluted, n), m4 = new THREE.Matrix4();
+  for (var i = 0; i < n; i++){ var u = a + step * (i + 0.5); var p = o === 'h' ? V(u, c + side * 0.09, (lo + hi) / 2) : V(c + side * 0.09, u, (lo + hi) / 2); m4.makeTranslation(p.x, p.y, p.z); mesh.setMatrixAt(i, m4); }
+  mesh.receiveShadow = true; mesh.userData.plan = o === 'h' ? [(a + b) / 2, c] : [c, (a + b) / 2]; group.add(mesh);
+  // warm cove: a soffit just above the reeds with a glowing strip on its underside, and a toe-kick glow
+  if (o === 'h'){
+    solid(group, a, c + side * 0.05, b, c + side * 0.32, hi, hi + 0.08, M.ceilWhite, { edges: false });
+    solid(group, a + 0.02, c + side * 0.13, b - 0.02, c + side * 0.16, hi - 0.012, hi, M.coveWarm, { edges: false, shadow: false });
+    solid(group, a, c + side * 0.13, b, c + side * 0.15, lo, lo + 0.03, M.coveWarm, { edges: false, shadow: false });
+  } else {
+    solid(group, c + side * 0.05, a, c + side * 0.32, b, hi, hi + 0.08, M.ceilWhite, { edges: false });
+    solid(group, c + side * 0.13, a + 0.02, c + side * 0.16, b - 0.02, hi - 0.012, hi, M.coveWarm, { edges: false, shadow: false });
+    solid(group, c + side * 0.13, a, c + side * 0.15, b, lo, lo + 0.03, M.coveWarm, { edges: false, shadow: false });
+  }
+  return mesh;
+}
+// sculpted column flaring into the ceiling, rising from a glossy round platform
+function sculptColumn(group, x, y, base, H){
+  var prof = [];
+  for (var i = 0; i <= 24; i++){ var t = i / 24; prof.push(new THREE.Vector2(0.17 + 0.05 * Math.sin(t * Math.PI) + 0.85 * Math.pow(t, 3.2), t * H)); }
+  prof.unshift(new THREE.Vector2(0.001, 0)); prof.push(new THREE.Vector2(0.001, H));
+  var col = new THREE.Mesh(new THREE.LatheGeometry(prof, 56), M.sculpt); col.position.copy(V(x, y, base)); col.castShadow = true; col.receiveShadow = true; group.add(col);
+  // vertical ribs following the flare
+  for (var k = 0; k < 28; k++){
+    var ang = k / 28 * Math.PI * 2, pts = [];
+    for (var j = 0; j <= 20; j++){ var t2 = j / 20, r = 0.18 + 0.05 * Math.sin(t2 * Math.PI) + 0.85 * Math.pow(t2, 3.2); pts.push(new THREE.Vector3(Math.cos(ang) * r, t2 * H * 0.98 + 0.01, Math.sin(ang) * r)); }
+    var rib = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 30, 0.008, 4, false), M.sculpt); rib.position.copy(col.position); group.add(rib);
+  }
+  return col;
+}
+function stripeGlobe(group, x, y, h, r){
+  var g = new THREE.Group(); g.position.copy(V(x, y, h));
+  var core = new THREE.Mesh(new THREE.SphereGeometry(r * 0.92, 32, 20), M.glowPanel); g.add(core);
+  for (var k = -3; k <= 3; k++){ var yy = k * r * 0.25, rr = Math.sqrt(Math.max(0.0001, r * r - yy * yy));
+    var band = new THREE.Mesh(new THREE.CylinderGeometry(rr, rr, r * 0.13, 32, 1, true), M.sculpt); band.material = M.sculpt; band.position.y = yy; g.add(band); }
+  var w = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 1, 3), M.frame); w.position.y = r + 0.5; g.add(w);
+  group.add(g); return g;
+}
+
+// --- Lobby (R101): white ceiling, organic raft over the hall, a light line tracing the reception area, moss wall on the east side
+solid(ceilEG, 33.35, 7.6, 38.45, 16.75, 3.05, 3.1, M.ceilWhite, { edges: false });
+solid(ceilEG, 38.45, 8.65, 43.85, 14.52, 3.05, 3.1, M.ceilWhite, { edges: false });
+lightRaft(ceilEG, [[34.0, 8.6], [37.9, 8.3], [37.9, 12.4], [35.6, 15.9], [34.0, 15.9]], 2.98, 0.12, 0.9);
+lightPath(ceilEG, [[38.75, 9.0], [43.55, 9.0], [43.55, 14.25], [38.75, 14.25]], 3.03, 0.9, true);
+lightPath(ceilEG, [[33.55, 8.0], [36.0, 7.85], [38.2, 9.5], [38.3, 15.0], [37.2, 16.55]], 3.03, 0, false);
+mossWall(furnEG, 'v', W - 0.225, -1, [[8.95, 0.35], [11.45, 0.35], [11.45, 2.8], [10.35, 2.8]], 0.32, 21);
+// --- Lounge (R203): white ceiling with a light raft around the light ring
+solid(ceilOG, 31.45, 9.05, 38.05, 17.1, OG + 3.05, OG + 3.1, M.ceilWhite, { edges: false });
+lightRaft(ceilOG, [[32.7, 9.6], [36.9, 9.5], [37.5, 13.9], [32.4, 14.2]], OG + 3.0, 0.12, 1.4);
+lightPath(ceilOG, [[31.75, 9.3], [37.8, 9.3], [37.8, 16.85], [31.75, 16.85]], OG + 3.03, 1.1, true);
+// warm and cool fill lights for the eye-level views
+[[35.6, 12.0, 2.7, 0xFFF1DE, 0.35], [35.0, 13.0, OG + 2.7, 0xFFEBD2, 0.4]].forEach(function(l){
+  var pl = new THREE.PointLight(l[3], l[4], 9, 1.6); pl.position.copy(V(l[0], l[1], l[2])); interiorLights.add(pl);
+});
+
 // ---------- Canteen roof with terraces ----------
 solid(roofLow, 0.31, D2 + 0.005, WE - 0.31, D - 0.31, EG_TOP, LOW_TOP, M.slab);
 solid(roofLow, 0.3, D2 + 0.05, WE - 0.3, D - 0.3, LOW_TOP, 4.84, M.green, { edges: false });
@@ -2002,7 +2210,8 @@ var STATIONS = [
     hot: [
       { t: 'Reception desk', d: 'Straight ahead as you enter. Oak top, light line on the guest side and a lowered section for wheelchair users; an induction loop serves guests with hearing aids.', at: [42.0, 11.0, 1.25] },
       { t: 'Welcome screen', d: 'Behind the reception desk the whole wall is one floor-to-ceiling screen: welcome film, Merz logo and the day’s visitors.', at: [41.45, 8.8, 2.2] },
-      { t: 'Xeomin hologram', d: 'Left of the desk a projection pedestal shows a slowly rotating, holographic molecule labelled Xeomin® — the product the site makes.', at: [39.4, 11.9, 1.6] },
+      { t: 'Merz logo hologram', d: 'Left of the desk a projection pedestal shows the Merz heptagon and wordmark as a slowly turning hologram.', at: [39.4, 11.9, 1.6] },
+      { t: 'Check-in kiosk', d: 'Right of the desk a self check-in kiosk: scan the QR code from the invitation and the badge prints at once, so the desk team can focus on welcoming.', at: [43.3, 12.35, 1.2] },
       { t: 'History wall · wall-to-floor LED', d: 'On the left, across the hall: an 8.3 m LED surface on the history wall continues onto the floor and plays the company’s milestones as a slow, looping film.', at: [33.6, 12.4, 1.9] },
       { t: 'Hologram at the Forum door', d: 'A life-size hologram character next to the Forum door welcomes the group and points the way in.', at: [36.5, 16.4, 1.9] },
       { t: 'On to the Forum and upstairs', d: 'The floor Leitlinie in brand colours leads into the Forum. Stairs TH01 and lift R107 take the group to the Showroom later.', at: [36.9, 8.2, 2.2] }
@@ -2077,6 +2286,7 @@ var STATIONS = [
     at: [34.7, 11.8, 2.0], box: [31.6, 9.1, 38.5, 16.95], center: [34.8, 12.8], cam: [37.6, 13.6, 1.65], look: [32.2, 12.2, 1.3],
     hot: [
       { t: 'Hologram character', d: 'Life-size hologram in a glass column at the end of the Verhältnis wall; greets guests and answers frequent questions.', at: [32.05, 16.25, 1.9] },
+      { t: 'Xeomin hologram', d: 'In the window corner a projection pedestal shows a slowly rotating, holographic molecule labelled Xeomin® — the product the site makes.', at: [36.9, 15.85, 1.6] },
       { t: 'Interactive touch table', d: 'Put a product on the table: it is recognised and the surface shows manufacturing, use and availability.', at: [34.7, 11.8, 1.15] },
       { t: 'Verhältnis · hanging objects', d: 'Pufferfish, snake, spider and frog hang along the long wall as sculptural samples in Merz blues.', at: [31.9, 13.4, 1.7] },
       { t: 'Verhältnis · vial cascade', d: 'About 1,100 glass vials pour from the ceiling to the floor: how a tiny amount becomes production quantities.', at: [32.3, 10.9, 1.3] },
@@ -2160,7 +2370,7 @@ var oakTex = canvasTex(512, 512, function(g, w, h){
       g.strokeStyle = 'rgba(110,80,45,.12)'; for (var k = 0; k < 5; k++){ g.beginPath(); var yy = r * 64 + 8 + k * 12; g.moveTo(c * 256 + off, yy); g.bezierCurveTo(c * 256 + off + 80, yy + 4, c * 256 + off + 170, yy - 4, c * 256 + off + 256, yy); g.stroke(); } } }
 });
 oakTex.wrapS = oakTex.wrapT = THREE.RepeatWrapping;
-var OAK = { 'R101': 1, 'R100': 1, 'R203': 1, 'R113a': 1, 'R106': 1, 'R201': 1, 'R204': 1 };
+var OAK = { 'R203': 1, 'R113a': 1, 'R106': 1, 'R201': 1, 'R204': 1 };
 (function(){
   [[41.4, 10.4, 2.8, 0xFFE6C8, 0.55], [41.4, 14.1, OG + 2.85, 0xF2F7FF, 0.7], [34.7, 12.2, OG + 2.75, 0xFFE2C0, 0.55]].forEach(function(l){
     var sp = new THREE.SpotLight(l[3], l[4], 10, 1.05, 0.7, 1.4); sp.position.copy(V(l[0], l[1], l[2])); sp.target.position.copy(V(l[0], l[1], l[2] - 3));
@@ -2168,12 +2378,12 @@ var OAK = { 'R101': 1, 'R100': 1, 'R203': 1, 'R113a': 1, 'R106': 1, 'R201': 1, '
     interiorLights.add(sp); interiorLights.add(sp.target);
   });
 })();
-var FINISH = { 'R101': [0xFFFFFF, 0.28], 'R100': [0xFFFFFF, 0.28], 'R113a': [0xFFFFFF, 0.3], 'R106': [0xFFFFFF, 0.3], 'R201': [0xFFFFFF, 0.3], 'R204': [0xFFFFFF, 0.3], 'R113b': [0xC2663F, 0.5], 'R114c': [0xC2663F, 0.5], 'R202': [0x0B1A33, 0.12], 'R203': [0xFFFFFF, 0.3], 'R214': [0x2E5E9E, 0.8], 'R209': [0x3E8E6F, 0.8], 'R121': [0xE0A43A, 0.8], 'R118/R122': [0x2A9D8F, 0.8], 'R217': [0x7FB069, 0.7], 'R218': [0x7B4FB0, 0.85], 'R208': [0x4899CA, 0.8], 'R212/R213': [0x5FA8D3, 0.6], 'R102': [0x2C74D8, 0.8], 'R130': [0x2A9D8F, 0.7] };
+var FINISH = { 'R101': [0xF7F6F3, 0.07, 1.1], 'R100': [0xF7F6F3, 0.07, 1.1], 'R113a': [0xFFFFFF, 0.3], 'R106': [0xFFFFFF, 0.3], 'R201': [0xFFFFFF, 0.3], 'R204': [0xFFFFFF, 0.3], 'R113b': [0xC2663F, 0.5], 'R114c': [0xC2663F, 0.5], 'R202': [0x0B1A33, 0.12], 'R203': [0xFFFFFF, 0.3], 'R214': [0x2E5E9E, 0.8], 'R209': [0x3E8E6F, 0.8], 'R121': [0xE0A43A, 0.8], 'R118/R122': [0x2A9D8F, 0.8], 'R217': [0x7FB069, 0.7], 'R218': [0x7B4FB0, 0.85], 'R208': [0x4899CA, 0.8], 'R212/R213': [0x5FA8D3, 0.6], 'R102': [0x2C74D8, 0.8], 'R130': [0x2A9D8F, 0.7] };
 function applyFinish(on){
   pickables.forEach(function(m){
     var mat = m.userData.baseMat || m.material, r = m.userData.room, f = FINISH[r.id] || [0xBFC2C4, 0.7];
     mat.color.setHex(on ? f[0] : mat.userData.cat);
-    mat.roughness = on ? f[1] : 0.85;
+    mat.roughness = on ? f[1] : 0.85; mat.envMapIntensity = on && f[2] ? f[2] : 0.35;
     if (OAK[r.id]){
       if (on && !m.userData.oak){ var gp = m.geometry.parameters, wood = r.id === 'R113a', t = (wood ? oakTex : concreteTex).clone(); t.needsUpdate = true; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(gp.width / (wood ? 2.4 : 3.2), gp.depth / (wood ? 2.4 : 3.2)); m.userData.oak = t; }
       mat.map = on ? m.userData.oak : null; mat.needsUpdate = true;
@@ -2513,6 +2723,7 @@ document.getElementById('btnNext').addEventListener('click', function(){ if (tou
 document.getElementById('btnPrev').addEventListener('click', function(){ if (tourIdx > 0) goStation(tourIdx - 1); });
 document.getElementById('btnEnd').addEventListener('click', endTour);
 document.querySelectorAll('#layers [data-opt]').forEach(function(b){ b.addEventListener('click', function(){ var kv = b.getAttribute('data-opt').split(':'); var si = setOpt(kv[0], kv[1]); if (tourIdx !== si) startTour(si); }); });
+setOpt('forum', 'hybrid'); // Hybrid is the default Forum layout
 document.getElementById('tCurt').addEventListener('change', function(e){ curtainPairs.forEach(function(p){ p.closed = e.target.checked; p.done = false; }); });
 forumWall.box = 'tWallF'; showWall.box = 'tWallS'; forumWall.label = 'Forum mobile wall'; showWall.label = 'Showroom mobile wall';
 function toggleMobile(w){ w.closed = !w.closed; w.done = false; document.getElementById(w.box).checked = w.closed; }
@@ -2520,6 +2731,11 @@ function toggleCurtain(p){ p.closed = !p.closed; p.done = false; document.getEle
 // hide / show the interface
 function setUI(hidden){ document.body.classList.toggle('ui-hidden', hidden); frameView(); }
 document.getElementById('btnHide').addEventListener('click', function(){ setUI(true); });
+// each window has its own close button; the restore button in the top bar brings all closed windows back
+var btnRestore = document.getElementById('btnRestore');
+function syncClosed(){ btnRestore.hidden = !document.querySelector('.closed'); }
+document.querySelectorAll('.xcl').forEach(function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); document.getElementById(b.getAttribute('data-close')).classList.add('closed'); syncClosed(); }); });
+btnRestore.addEventListener('click', function(){ document.querySelectorAll('.closed').forEach(function(el){ el.classList.remove('closed'); }); syncClosed(); });
 document.getElementById('btnShow').addEventListener('click', function(){ setUI(false); });
 document.getElementById('btnMin').addEventListener('click', function(){ var m = !stationEl.classList.contains('min'); stationEl.classList.toggle('min', m); this.setAttribute('aria-expanded', String(!m)); this.textContent = m ? '+' : '–'; frameView(); });
 window.addEventListener('keydown', function(e){
@@ -2612,7 +2828,7 @@ var I18N = {
     optA: 'A · Half Dome', optB: 'B · Movie Chairs', building: 'Building', layersHdr: 'Layers',
     curtains: 'Curtains closed<small>Block the sun at every window</small>', wallF: 'Forum mobile wall closed<small>Separates Forum and canteen</small>',
     wallS: 'Showroom mobile wall closed<small>Closes off the live-demo area</small>', focus: 'Highlight journey rooms<small>Fades every room the visit doesn’t use</small>',
-    route: 'Visitor route', labels: 'Station labels', furn: 'Furniture &amp; décor', a11y: 'Accessibility notes', plan: 'Plan drawing underlay', accent: 'Magenta accents<small>Classic Merz pink instead of the blue accents</small>', colourKey: 'Colour key',
+    route: 'Visitor route', labels: 'Station labels', furn: 'Furniture &amp; décor', a11y: 'Accessibility notes', plan: 'Plan drawing underlay', accent: 'Magenta accents<small>Classic Merz pink · switch off for blue accents</small>', colourKey: 'Colour key',
     kRoute: 'Visitor route', kCore: 'Experience core', kHosp: 'Hospitality', kForum: 'Forum', kHealth: 'Ärztezentrum', kStaff: 'Employees', kBoh: 'Back-of-house', kCirc: 'Circulation, WC',
     eye: 'Eye level', roomOverview: 'Room overview', whatHappens: 'What happens here', lookCloser: 'Look closer', prev: '← Previous', next: 'Next stop →', finish: 'Finish', exit: 'Exit',
     walkIn: 'Walk in · eye level', showUI: 'Show interface', walk: 'Walk the journey', stopOf: 'Stop {n} of {m}', brandSub: 'Welcome &amp; Experience Center · Merz, Dessau',
@@ -2621,7 +2837,7 @@ var I18N = {
     hintOver: 'Drag to orbit · scroll to zoom · click a room to open it · click curtains or mobile walls · H hides the interface',
     openCurtains: 'Click to open the curtains', closeCurtains: 'Click to close the curtains', openWall: 'Click to open the {w}', closeWall: 'Click to close the {w}',
     rollUp: 'Click to roll the LED wall up', rollDown: 'Click to roll the LED wall down', clickOpen: ' · click to open', wallForum: 'Forum mobile wall', wallShow: 'Showroom mobile wall',
-    hideUI: 'Hide the interface (H)'
+    hideUI: 'Hide the interface (H)', closeWin: 'Close', restoreWin: 'Show closed windows'
   },
   de: {
     viewOutside: 'Außen', viewExploded: 'Explosion', viewEG: 'Erdgeschoss', viewOG: 'Obergeschoss', layers: 'Ebenen &amp; Licht', sun: 'Sonnenlicht · Tageszeit',
@@ -2629,7 +2845,7 @@ var I18N = {
     optA: 'A · Halbkuppel', optB: 'B · Kinosessel', building: 'Gebäude', layersHdr: 'Ebenen',
     curtains: 'Vorhänge geschlossen<small>Sonnenschutz an allen Fenstern</small>', wallF: 'Mobile Trennwand Forum zu<small>Trennt Forum und Kantine</small>',
     wallS: 'Mobile Trennwand Showroom zu<small>Schließt den Live-Demo-Bereich ab</small>', focus: 'Rundgang-Räume hervorheben<small>Blendet alle anderen Räume aus</small>',
-    route: 'Besucherroute', labels: 'Stationsbeschriftungen', furn: 'Möbel &amp; Dekor', a11y: 'Hinweise Barrierefreiheit', plan: 'Grundriss einblenden', accent: 'Magenta-Akzente<small>Klassisches Merz-Pink statt der Blau-Akzente</small>', colourKey: 'Farblegende',
+    route: 'Besucherroute', labels: 'Stationsbeschriftungen', furn: 'Möbel &amp; Dekor', a11y: 'Hinweise Barrierefreiheit', plan: 'Grundriss einblenden', accent: 'Magenta-Akzente<small>Klassisches Merz-Pink · ausschalten für Blau-Akzente</small>', colourKey: 'Farblegende',
     kRoute: 'Besucherroute', kCore: 'Erlebniskern', kHosp: 'Gastronomie', kForum: 'Forum', kHealth: 'Ärztezentrum', kStaff: 'Mitarbeitende', kBoh: 'Nebenräume', kCirc: 'Verkehrsflächen, WC',
     eye: 'Augenhöhe', roomOverview: 'Raumübersicht', whatHappens: 'Was hier passiert', lookCloser: 'Genauer hinsehen', prev: '← Zurück', next: 'Nächste Station →', finish: 'Abschließen', exit: 'Beenden',
     walkIn: 'Betreten · Augenhöhe', showUI: 'Oberfläche einblenden', walk: 'Rundgang starten', stopOf: 'Station {n} von {m}', brandSub: 'Welcome &amp; Experience Center · Merz, Dessau',
@@ -2638,7 +2854,7 @@ var I18N = {
     hintOver: 'Ziehen zum Drehen · scrollen zum Zoomen · Raum anklicken zum Öffnen · Vorhänge und Trennwände anklicken · H blendet die Oberfläche aus',
     openCurtains: 'Klicken, um die Vorhänge zu öffnen', closeCurtains: 'Klicken, um die Vorhänge zu schließen', openWall: 'Klicken, um die {w} zu öffnen', closeWall: 'Klicken, um die {w} zu schließen',
     rollUp: 'Klicken, um die LED-Wand hochzufahren', rollDown: 'Klicken, um die LED-Wand herunterzufahren', clickOpen: ' · zum Öffnen klicken', wallForum: 'mobile Trennwand im Forum', wallShow: 'mobile Trennwand im Showroom',
-    hideUI: 'Oberfläche ausblenden (H)'
+    hideUI: 'Oberfläche ausblenden (H)', closeWin: 'Schließen', restoreWin: 'Geschlossene Fenster zeigen'
   }
 };
 var LANG = 'en';
@@ -2652,7 +2868,8 @@ var DE_STATIONS = [
     steps: ['Ebenerdiger, schwellenloser Eingang vom Vorplatz durch die gläserne Schiebetür.', 'Anmeldung am Empfangstresen geradeaus: Ausweis oder Armband, Garderobe und Taschen.', 'Wartende Gäste verfolgen die LED-Geschichte, die von der Wand auf den Boden läuft.', 'Der Guide sammelt die Gruppe und führt sie entlang der Leitlinie ins Forum.'],
     hot: [{ t: 'Empfangstresen', d: 'Direkt geradeaus beim Eintreten. Eichenplatte, Lichtlinie auf der Gästeseite und ein abgesenkter Bereich für Rollstuhlnutzende; eine Induktionsschleife unterstützt Hörgeräte.' },
       { t: 'Welcome-Screen', d: 'Hinter dem Tresen ist die ganze Wand ein raumhoher Bildschirm: Willkommensfilm, Merz-Logo und die Gäste des Tages.' },
-      { t: 'Xeomin-Hologramm', d: 'Links vom Tresen zeigt ein Projektionssockel ein langsam rotierendes holografisches Molekül mit der Aufschrift Xeomin® – das Produkt des Standorts.' },
+      { t: 'Merz-Logo-Hologramm', d: 'Links vom Tresen zeigt ein Projektionssockel das Merz-Heptagon mit Schriftzug als langsam drehendes Hologramm.' },
+      { t: 'Anmelde-Kiosk', d: 'Rechts vom Tresen ein Self-Check-in-Kiosk: QR-Code aus der Einladung scannen, der Badge wird sofort gedruckt, und das Empfangsteam hat Zeit für die Begrüßung.' },
       { t: 'Geschichtswand · LED bis zum Boden', d: 'Links gegenüber: eine 8,3 m lange LED-Fläche auf der Geschichtswand läuft bis auf den Boden und zeigt die Meilensteine des Unternehmens als ruhigen Loop.' },
       { t: 'Hologramm an der Forumstür', d: 'Eine lebensgroße Hologramm-Figur neben der Forumstür begrüßt die Gruppe und weist den Weg.' },
       { t: 'Weiter ins Forum und nach oben', d: 'Die Leitlinie im Boden in Markenfarben führt ins Forum. Treppe TH01 und Aufzug R107 bringen die Gruppe später in den Showroom.' }] },
@@ -2700,6 +2917,7 @@ var DE_STATIONS = [
     text: 'Gespräche und die Installation Verhältnis, die jetzt an der langen Wand der Lounge hängt. Die Hologramm-Figur steht an ihrem Ende, und der Touch-Tisch erkennt Merz-Produkte.',
     steps: ['Durch die Terrassentür geht es auf die Dachterrasse 2, einen schlichten Sitzbereich im Freien.', 'Wer ein Produkt auf den Touch-Tisch legt, sieht Herstellung, Anwendung und Verfügbarkeit.', 'An der langen Wand stellt Verhältnis das Toxin Tiergiften gegenüber; die Ampullen-Kaskade zeigt die Verdünnung.', 'Die Hologramm-Figur verabschiedet die Gäste – dann geht es die Treppe hinunter zum Ausgang.'],
     hot: [{ t: 'Hologramm-Figur', d: 'Lebensgroßes Hologramm in einer Glassäule am Ende der Verhältnis-Wand; begrüßt die Gäste und beantwortet häufige Fragen.' },
+      { t: 'Xeomin-Hologramm', d: 'In der Fensterecke zeigt ein Projektionssockel ein langsam rotierendes holografisches Molekül mit der Aufschrift Xeomin® – das Produkt des Standorts.' },
       { t: 'Interaktiver Touch-Tisch', d: 'Ein Produkt auf den Tisch legen: Es wird erkannt, und die Oberfläche zeigt Herstellung, Anwendung und Verfügbarkeit.' },
       { t: 'Verhältnis · hängende Objekte', d: 'Kugelfisch, Schlange, Spinne und Frosch hängen als skulpturale Exponate in Merz-Blautönen an der langen Wand.' },
       { t: 'Verhältnis · Ampullen-Kaskade', d: 'Rund 1.100 Glasampullen fließen von der Decke bis zum Boden: wie aus einer winzigen Menge Produktionsmengen werden.' },
@@ -2718,9 +2936,9 @@ var EN_FIX = [ // corrected English (out-of-date sentences)
 EN_FIX.forEach(function(f){ var st = STATIONS[f[0]]; if (st && st.opts && st.opts[f[1]] && st.opts[f[1]].hot[f[2]]) st.opts[f[1]].hot[f[2]].d = f[3]; });
 var ROOM_TEXT = {
   en: {
-    'R101': 'Station 1 · Ankommen & Anmeldung. Guests walk from the Windfang straight to the curved reception desk with the welcome screen behind it; the Xeomin hologram stands to the left. The west part of the hall is the history wall with its wall-to-floor LED screen. Polished concrete floor, oak slat ceiling with a hanging light installation.',
+    'R101': 'Station 1 · Ankommen & Anmeldung. Guests walk from the Windfang straight to the curved reception desk with the welcome screen behind it; the Merz logo hologram stands to the left and a self check-in kiosk to the right. The west part of the hall is the history wall with its wall-to-floor LED screen. Glossy white floor, white ceiling with a floating light raft, curved light lines, a hanging light installation and a moss wall by the reception.',
     'R113a': 'Station 2 · Forum: debrief and waiting room with a huge roll-up LED wall in a stone frame, information kiosks along the window and three layouts (briefing, hybrid, lounge). The mobile wall on the canteen side has eight elements. Oak slat ceiling with curved light sails.',
-    'R203': 'Station 5 · Lounge. Interactive touch table on a blue round carpet, the Verhältnis installation along the long wall, a life-size hologram character, lounge seating under an oak slat ceiling with a light ring. Glass doors lead to the Showroom, a terrace door to Dachterrasse 2.',
+    'R203': 'Station 5 · Lounge. Interactive touch table on a blue round carpet, the Verhältnis installation along the long wall, a life-size hologram character, the Xeomin molecule hologram, lounge seating under a white ceiling with a floating light raft and light ring. Glass doors lead to the Showroom, a terrace door to Dachterrasse 2.',
     'R202': 'Stations 3 and 4 · Showroom in a futuristic design: the live demonstration in the west part (glowing heptagon inlay, light halo, bench arc, robotic camera), a heptagon light portal, and the VR station at the east end (Option A half dome or Option B movie chairs). The mobile wall (five elements) can close off the live-demo area.',
     'Terrasse 2': 'Simple outdoor sitting area after the lounge, reached through the terrace door: oak tables, chairs and a bench along the railing. The deck sits about 10–18 cm above the OG floor, so the door needs a ramp or a raised deck.'
   },
@@ -2729,13 +2947,13 @@ var ROOM_TEXT = {
     'R107': 'Aufzug R107: stufenloser Weg ins Obergeschoss.', 'R106': 'Das Treppenhaus zur Erlebnisebene; der Aufzug R107 daneben hält den Weg stufenlos.', 'R105': 'BMA- und Sicherheitsraum.',
     'R102': 'Vorgeschlagener Stützpunkt für Buchungen, Guides und Botschafter-Briefings, direkt neben dem Empfang.', 'R130': 'Mitarbeiter- und Büroeingang an der Nordfassade.', 'R131': 'Putzmittelraum.',
     'R114c': 'Ausgabetheke, zur Kantine hin offen.', 'R112': 'Stuhllager für das Forum.', 'R110': 'Barrierefreies WC.', 'R108': 'Flur zwischen WC-Kern und Forum.',
-    'R101': 'Station 1 · Ankommen & Anmeldung. Vom Windfang geht es direkt zum geschwungenen Empfangstresen mit dem Welcome-Screen dahinter; links steht das Xeomin-Hologramm. Im westlichen Teil der Halle liegt die Geschichtswand mit LED-Screen bis zum Boden. Geschliffener Betonboden, Eichenlamellendecke mit hängender Lichtinstallation.',
+    'R101': 'Station 1 · Ankommen & Anmeldung. Vom Windfang geht es direkt zum geschwungenen Empfangstresen mit dem Welcome-Screen dahinter; links steht das Merz-Logo-Hologramm, rechts ein Self-Check-in-Kiosk. Im westlichen Teil der Halle liegt die Geschichtswand mit LED-Screen bis zum Boden. Glänzend weißer Boden, weiße Decke mit schwebendem Lichtsegel, geschwungenen Lichtlinien, hängender Lichtinstallation und Mooswand am Empfang.',
     'R100': 'Besuchereingang vom Vorplatz an der Südwestecke mit bodengleichen Sauberlaufzonen. Hier beginnt die Leitlinie.',
     'R113b': 'Kantine „Tafel“. Die tägliche Kantine der Mitarbeitenden. Speiseplan und interne News laufen gemeinsam auf dem Tafel-Screen an der Ausgabe. Filzbaffeldecke mit Lichtlinien für die Akustik.',
     'R113a': 'Station 2 · Forum: Debrief- und Warteraum mit großer rollbarer LED-Wand im Steinrahmen, Info-Kiosken am Fenster und drei Layouts (Briefing, Hybrid, Lounge). Die mobile Trennwand zur Kantine hat acht Elemente. Eichenlamellendecke mit geschwungenen Lichtsegeln.',
     'R217': 'Betriebsarzt, Kern des Gesundheitsbereichs für Mitarbeitende (unsere Lesart des „Ärztezentrums“ im Briefing). Nicht Teil des Rundgangs.',
     'R218': 'Ruheraum im Gesundheitsbereich. Gleiche Gestaltungssprache, eigene Wegeführung.', 'R219': 'Lüftungsgeräte für Küche und Kantine.',
-    'R203': 'Station 5 · Lounge. Interaktiver Touch-Tisch auf rundem blauem Teppich, die Installation Verhältnis an der langen Wand, eine lebensgroße Hologramm-Figur und Lounge-Möbel unter einer Eichenlamellendecke mit Lichtring. Glastüren führen in den Showroom, eine Terrassentür auf die Dachterrasse 2.',
+    'R203': 'Station 5 · Lounge. Interaktiver Touch-Tisch auf rundem blauem Teppich, die Installation Verhältnis an der langen Wand, eine lebensgroße Hologramm-Figur, das Xeomin-Molekül als Hologramm und Lounge-Möbel unter einer weißen Decke mit schwebendem Lichtsegel und Lichtring. Glastüren führen in den Showroom, eine Terrassentür auf die Dachterrasse 2.',
     'R202': 'Stationen 3 und 4 · Showroom im futuristischen Design: die Live-Demonstration im westlichen Teil (leuchtendes Heptagon-Feld, Lichthalo, Bankbogen, Roboterkamera), ein Heptagon-Lichtportal und die VR-Station am östlichen Ende (Variante A Halbkuppel oder B Kinosessel). Die fünfteilige mobile Trennwand kann den Live-Demo-Bereich abtrennen.',
     'Terrasse 1': 'Dachterrasse auf der Mitarbeiterseite vor dem Fitnessraum.',
     'Terrasse 2': 'Schlichter Sitzbereich im Freien nach der Lounge, über die Terrassentür erreichbar: Eichentische, Stühle und eine Bank am Geländer. Das Deck liegt etwa 10–18 cm über dem OG-Fußboden, die Tür braucht eine Rampe oder ein angehobenes Deck.',
@@ -2840,7 +3058,7 @@ function loop(){
     anim.tex.forEach(function(a){ a.t.offset.x = (a.t.offset.x + dt * a.s) % 1; });
     updateBrand(dt);
     var tt = performance.now() / 1000;
-    if (anim.mol){ anim.mol.rotation.y = tt * 0.45; anim.mol.rotation.x = Math.sin(tt * 0.3) * 0.25; anim.mol.position.y = 1.45 + Math.sin(tt * 1.2) * 0.03; if (anim.molLabel) anim.molLabel.lookAt(camera.position.x, anim.molLabel.position.y, camera.position.z); }
+    anim.holos.forEach(function(h, i){ h.g.rotation.y = tt * 0.45 + i; if (h.tilt) h.g.rotation.x = Math.sin(tt * 0.3) * 0.25; h.g.position.y = h.y + Math.sin(tt * 1.2 + i) * 0.03; if (h.lbl) h.lbl.lookAt(camera.position.x, h.lbl.position.y, camera.position.z); });
     if (anim.futHalo) anim.futHalo.rotation.z = tt * 0.3;
     if (anim.futPortal) anim.futPortal.forEach(function(p, i){ p.scale.setScalar(1 + 0.025 * Math.sin(tt * 2 + i * 1.5)); });
     if (anim.futArm) anim.futArm.rotation.y = Math.sin(tt * 0.4) * 0.25;
